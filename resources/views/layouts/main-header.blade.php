@@ -1,38 +1,4 @@
-<?php
-use GuzzleHttp\Client;
-$token = Cookie::get('token');
-// $name = Cookie::get('name');
-if (isset($token) && $token != null) {
-    $client = new Client([
-        'headers' => [
-        'Authorization' => 'Bearer ' . $token,
-        'Content-Type' => 'application/json',
-        ],
-    ]);
-    $data = $client->get(\App\Models\BaseModel::URI_API . '/ctv/product/detail-cart');
-    $response = json_decode($data->getBody()->getContents(), true);
-    if($response['status']==1){
-        $detail = $response['data'];
-        $infor = $detail['user'];
-    }
 
-
-    $data2 = $client->get(\App\Models\BaseModel::URI_API . '/notify/list-notify');
-    $response2 = json_decode($data2->getBody()->getContents(), true);
-    if($response2['status']==1){
-        $noti = $response2['data'];
-        $noty = $noti['count_notify'];
-        
-    }
-    else{
-        $noti = '';
-        $noty = '';
-    }
-
-
-}
-
-?>
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -43,19 +9,8 @@ if (isset($token) && $token != null) {
     </ul>
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-        <!-- Messages Dropdown Menu -->
-        <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link" href="{{asset('gio-hang')}}"
-                >
-                <i class="fas fa-shopping-cart"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-warning navbar-badge">@if(isset($detail['total_number'])) {{$detail['total_number']}} @endif</span>
-                {{-- <span class="badge badge-danger badge-counter">@if(isset($detail['total_number'])) {{$detail['total_number']}} @endif</span> --}}
-            </a>
-            <!-- Dropdown - Alerts -->
-
-        </li>
-        <li class="nav-item dropdown">
+       
+        {{-- <li class="nav-item dropdown">
            
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
@@ -94,17 +49,14 @@ if (isset($token) && $token != null) {
                 <a class="dropdown-item text-center small text-gray-500" href="{{asset('thong-bao/page=1')}}">Xem thêm</a>
             
         </div>
-        </li>
+        </li> --}}
 
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
-                @php
-                    $name = $infor['name'];
-                    echo $name;
-                @endphp
+              Admin
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <a class="dropdown-item" href="{{ route('informationCtv') }}">
+                <a class="dropdown-item" href="{{ route('informationUser') }}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-700"></i>
                     Thông tin tài khoản
                 </a>
@@ -154,7 +106,7 @@ if (isset($token) && $token != null) {
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">Đổi mật khẩu</h1>
                         </div>
-                        <form class="user" method="put" action="{{ route('PassCTV') }}">
+                        <form class="user" method="put" action="{{ route('PassUser') }}">
                             @csrf
                             @method('PUT')
                             <div class="form-group">

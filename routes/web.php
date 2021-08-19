@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\CTVController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\Product\ProductController;
 use App\Http\Controllers\Api\WalletController;
 
@@ -39,42 +39,42 @@ Route::get('/excel-order', [ProductController::class, 'excelOrder'])->name('exce
 Route::get('/bai-dang/{page}', [ProductController::class, 'listContent'])->name('listContent');
 Route::get('/chi-tiet-bai-dang/{id}', [ProductController::class, 'detailContent'])->name('detailContent');
 
-Route::get('/goi-sua', [CTVController::class, 'Packet'])->name('goi-sua');
-Route::get('/goi-mua-sua', [CTVController::class, 'buyPacket'])->name('goi-mua-sua');
-Route::get('/chi-tiet-goi-mua/id={id}', [CTVController::class, 'buyPacketDetail'])->name('chi-tiet-goi-mua');
-Route::get('/huy-goi-mua/id={id}', [CTVController::class, 'deleteBuyPacket'])->name('huy-goi-mua');
+Route::get('/goi-sua', [UserController::class, 'Packet'])->name('goi-sua');
+Route::get('/goi-mua-sua', [UserController::class, 'buyPacket'])->name('goi-mua-sua');
+Route::get('/chi-tiet-goi-mua/id={id}', [UserController::class, 'buyPacketDetail'])->name('chi-tiet-goi-mua');
+Route::get('/huy-goi-mua/id={id}', [UserController::class, 'deleteBuyPacket'])->name('huy-goi-mua');
 Route::get('/excel-packet', [ProductController::class, 'excelPacket'])->name('excelPacket');
 
-Route::get('/ctv-tuyen-duoi', [CTVController::class, 'CTVrevenue'])->name('ctv-tuyen-duoi');
-Route::get('/chi-tiet-doanh-thu/id={id}', [CTVController::class, 'CTVrevenueDetail'])->name('chi-tiet-doanh-thu');
+Route::get('/User-tuyen-duoi', [UserController::class, 'Userrevenue'])->name('User-tuyen-duoi');
+Route::get('/chi-tiet-doanh-thu/id={id}', [UserController::class, 'UserrevenueDetail'])->name('chi-tiet-doanh-thu');
 
-Route::get('/cong-doanh-so', [CTVController::class, 'CTVcalculator'])->name('cong-doanh-so');
-Route::get('/chi-tiet-cong-doanh-so/id={id}', [CTVController::class, 'CTVcalculatorDetail'])->name('chi-tiet-cong-doanh-so');
-Route::post('/updateADD/{id}', [CTVController::class, 'updateADD'])->name('updateADD');
-Route::post('/deleteADD/{id}', [CTVController::class, 'deleteADD'])->name('deleteADD');
+Route::get('/cong-doanh-so', [UserController::class, 'Usercalculator'])->name('cong-doanh-so');
+Route::get('/chi-tiet-cong-doanh-so/id={id}', [UserController::class, 'UsercalculatorDetail'])->name('chi-tiet-cong-doanh-so');
+Route::post('/updateADD/{id}', [UserController::class, 'updateADD'])->name('updateADD');
+Route::post('/deleteADD/{id}', [UserController::class, 'deleteADD'])->name('deleteADD');
 
-Route::get('/chi-tiet-goi-sua/id={id}', [CTVController::class, 'Packetdetail'])->name('chi-tiet-goi-sua');
-Route::get('/dat-mua-sua/id={id}', [CTVController::class, 'Order'])->name('dat-mua-sua');
+Route::get('/chi-tiet-goi-sua/id={id}', [UserController::class, 'Packetdetail'])->name('chi-tiet-goi-sua');
+Route::get('/dat-mua-sua/id={id}', [UserController::class, 'Order'])->name('dat-mua-sua');
 
-Route::post('/register', [CTVController::class, 'register'])->name('register');
-Route::post('/login', [CTVController::class, 'login'])->name('login');
-Route::get('/logout', [CTVController::class, 'logout'])->name('logout');
-Route::get('/trang-chu', [CTVController::class, 'getUserInfo'])->name('trang-chu');
-Route::get('/updateCTV', [CTVController::class, 'updateCTV'])->name('updateCTV');
-Route::get('/PassCTV', [CTVController::class, 'PassCTV'])->name('PassCTV');
-Route::post('/comfirmOrder', [CTVController::class, 'comfirmOrder'])->name('comfirmOrder');
-Route::post('/comfirmDddrevenue', [CTVController::class, 'comfirmDddrevenue'])->name('comfirmDddrevenue');
+Route::post('/register', [UserController::class, 'register'])->name('register');
+Route::post('/login', [UserController::class, 'login'])->name('login');
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+Route::get('/trang-chu', [UserController::class, 'getUserInfo'])->name('trang-chu');
+Route::get('/updateUser', [UserController::class, 'updateUser'])->name('updateUser');
+Route::get('/PassUser', [UserController::class, 'PassUser'])->name('PassUser');
+Route::post('/comfirmOrder', [UserController::class, 'comfirmOrder'])->name('comfirmOrder');
+Route::post('/comfirmDddrevenue', [UserController::class, 'comfirmDddrevenue'])->name('comfirmDddrevenue');
 
-Route::post('/notify', [CTVController::class, 'notify'])->name('notify');
-Route::get('/thong-bao/page={i}', [CTVController::class, 'notifyy'])->name('listNotify');
+Route::post('/notify', [UserController::class, 'notify'])->name('notify');
+Route::get('/thong-bao/page={i}', [UserController::class, 'notifyy'])->name('listNotify');
 
-Route::get('/thong-tin-ca-nhan','CTVController@informationCtv')->name('informationCtv');
+Route::get('/thong-tin-ca-nhan','UserController@informationUser')->name('informationUser');
 // Route::get('/thong-tin-ca-nhan', function () {
 
-//     return view('includes.information-ctv');
+//     return view('includes.information-User');
 // });
-Route::put('/update-InformationCtv/{user_id}', 'CTVController@updateCtv')->name('update-InformationCtv');
-Route::get('/excel-ctv', 'CTVController@excelCTV')->name('excelCTV');
+Route::put('/update-InformationUser/{user_id}', 'UserController@updateUser')->name('update-InformationUser');
+Route::get('/excel-User', 'UserController@excelUser')->name('excelUser');
 
 Route::get('/vi-tien/{page}', [WalletController::class, 'myWallet'])->name('myWallet');
 Route::view('/them-giao-dich', 'includes.wallet.addWallet')->name('addWallet');

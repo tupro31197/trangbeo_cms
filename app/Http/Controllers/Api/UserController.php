@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cookie;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
 
-class CTVController extends ControllerBase
+class UserController extends ControllerBase
 {
     // public function setCookie($token){
     //     $minutes = 60;
@@ -126,14 +126,14 @@ class CTVController extends ControllerBase
     }
     public function login(Request $request)
     {
-        try {
+        // try {
             $body = [
                 'phone' => $request->phone,
                 'password' => $request->password,
             ];
 
             $input = json_encode($body);
-            $url = $this->urlAPI() . '/ctv/login-ctv';
+            $url = $this->urlAPI() . '/login';
             $client = new Client([
                 'headers' => ['Content-Type' => 'application/json'],
             ]);
@@ -154,10 +154,10 @@ class CTVController extends ControllerBase
                 // cookie('user_id', $response['data']['user']['id'], 1440);
                 return redirect($url)->withCookie(cookie('token', $response['data']['token'], 1440));
             }
-        } catch (\Throwable $th) {
-            alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-            return back();
-        }
+        // } catch (\Throwable $th) {
+        //     alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+        //     return back();
+        // }
     }
     public function getUserInfo(Request $request)
     {
@@ -170,29 +170,8 @@ class CTVController extends ControllerBase
                         'Accept' => 'application/json',
                     ],
                 ]);
-                $data = $client->get($this->urlAPI() . '/ctv/get-user-infomation', [
-                    'headers' => [
-                        'Authorization' => 'Bearer ' . $token,
-                        'Accept' => 'application/json',
-                    ],
-                ]);
-                $response = json_decode($data->getBody()->getContents(), true);
-                $infor = $response['data'];
-
-                $dashboard = $client->get($this->urlAPI() . '/list-dashboard', [
-                    'headers' => [
-                        'Authorization' => 'Bearer ' . $token,
-                        'Accept' => 'application/json',
-                    ],
-                ]);
-                $responsedashboard = json_decode($dashboard->getBody()->getContents(), true);
-                $dashboard = $responsedashboard['data'];
-
-                $databuy = $client->get($this->urlAPI() . '/ctv/packet/list-buy-packet');
-                $responsebuy = json_decode($databuy->getBody()->getContents(), true);
-                $buy = $responsebuy['data'];
-
-                return view('includes.index', compact('infor', 'dashboard', 'buy'));
+          
+                return view('includes.index');
             } else {
                 return view('welcome');
             }

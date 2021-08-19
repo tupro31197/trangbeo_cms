@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
-    <title>CTV Healthmoomy - Login</title>
+    <title>Admin - Login</title>
     @include('layout/libcss')
 </head>
 
@@ -26,11 +26,13 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image" style="background:url({{ asset('img/Rectangle.png') }})"></div>
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image" style="background: none"> <img src="{{ asset('img/logo.png') }}" alt="" style="display: block;
+                                margin: 100px auto;
+                                width: 200px;"></div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Đăng nhập</h1>
                                     </div>
                                     <div style="margin-top: 50px;">
 
