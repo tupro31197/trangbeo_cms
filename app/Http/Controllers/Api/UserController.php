@@ -33,7 +33,7 @@ class UserController extends ControllerBase
     //     }
     // }
 
-    public function excelCTV()
+    public function excelUser()
     {
         try {
             $token = Cookie::get('token');
@@ -43,20 +43,20 @@ class UserController extends ControllerBase
                         'Authorization' => 'Bearer ' . $token,
                     ],
                 ]);
-                $data = $client->get($this->urlAPI() . '/ctv/revenue/list-revenue-ctv');
+                $data = $client->get($this->urlAPI() . '/User/revenue/list-revenue-User');
                 $response = json_decode($data->getBody()->getContents(), true);
                 $revenue = $response['data'];
 
-                $datainfor = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+                $datainfor = $client->get($this->urlAPI() . '/User/get-user-infomation');
                 $responseinfor = json_decode($datainfor->getBody()->getContents(), true);
                 $infor = $responseinfor['data'];
 
                 // dd($response);
                 if ($response['status'] == 1) {
-                    $listCtv = $response['data']['list']['data'];
+                    $listUser = $response['data']['list']['data'];
 
-                    foreach ($listCtv as $key => $value) {
-                        $ctv[$key] = [
+                    foreach ($listUser as $key => $value) {
+                        $User[$key] = [
                             'stt' => $key + 1,
                             'id' => $value['id'],
                             'name' => $value['name'],
@@ -70,11 +70,11 @@ class UserController extends ControllerBase
                             'total_money' => $value['total_money'],
                         ];
                     }
-                    $export = new UsersExport($ctv);
+                    $export = new UsersExport($User);
 
-                    return Excel::download($export, 'list-ctv.xlsx');
+                    return Excel::download($export, 'list-User.xlsx');
                     //  dd($infor);
-                    return view('includes.revenue.ctvrevenue', compact('revenue', 'infor'));
+                    return view('includes.revenue.Userrevenue', compact('revenue', 'infor'));
                 } else {
                     return redirect()->route('trang-chu');
                 }
@@ -101,7 +101,7 @@ class UserController extends ControllerBase
             ];
             $input = json_encode($body);
 
-            $url = $this->urlAPI() . '/ctv/register-ctv';
+            $url = $this->urlAPI() . '/User/register-User';
             $client = new Client([
                 'headers' => [
                     'Content-Type' => 'application/json',
@@ -126,7 +126,7 @@ class UserController extends ControllerBase
     }
     public function login(Request $request)
     {
-        // try {
+        try {
             $body = [
                 'phone' => $request->phone,
                 'password' => $request->password,
@@ -154,10 +154,10 @@ class UserController extends ControllerBase
                 // cookie('user_id', $response['data']['user']['id'], 1440);
                 return redirect($url)->withCookie(cookie('token', $response['data']['token'], 1440));
             }
-        // } catch (\Throwable $th) {
-        //     alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //     return back();
-        // }
+        } catch (\Throwable $th) {
+            alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
     }
     public function getUserInfo(Request $request)
     {
@@ -205,7 +205,7 @@ class UserController extends ControllerBase
             return back();
         }
     }
-    public function updateCTV(Request $request)
+    public function updateUser(Request $request)
     {
         try {
             $token = $request->cookie('token');
@@ -229,7 +229,7 @@ class UserController extends ControllerBase
             // ];
             //  dd($data);
 
-            $url = $this->urlAPI() . '/ctv/update-ctv';
+            $url = $this->urlAPI() . '/User/update-User';
             $client = new Client([
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
@@ -256,7 +256,7 @@ class UserController extends ControllerBase
             return back();
         }
     }
-    public function PassCTV(Request $request)
+    public function PassUser(Request $request)
     {
         try {
             $token = $request->cookie('token');
@@ -303,11 +303,11 @@ class UserController extends ControllerBase
                 ],
             ]);
 
-            $data = $client->get($this->urlAPI() . '/ctv/packet/list-packet');
+            $data = $client->get($this->urlAPI() . '/User/packet/list-packet');
             $response = json_decode($data->getBody()->getContents(), true);
             $packet = $response['data'];
 
-            $datainfor = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+            $datainfor = $client->get($this->urlAPI() . '/User/get-user-infomation');
             $responseinfor = json_decode($datainfor->getBody()->getContents(), true);
             $infor = $responseinfor['data'];
 
@@ -327,11 +327,11 @@ class UserController extends ControllerBase
                 ],
             ]);
 
-            $data = $client->get($this->urlAPI() . "/ctv/packet/packet-detail/$id");
+            $data = $client->get($this->urlAPI() . "/User/packet/packet-detail/$id");
             $response = json_decode($data->getBody()->getContents(), true);
             $packetdetail = $response['data'];
 
-            $datainfor = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+            $datainfor = $client->get($this->urlAPI() . '/User/get-user-infomation');
             $responseinfor = json_decode($datainfor->getBody()->getContents(), true);
             $infor = $responseinfor['data'];
 
@@ -351,11 +351,11 @@ class UserController extends ControllerBase
                 ],
             ]);
 
-            $data = $client->get($this->urlAPI() . "/ctv/packet/packet-detail/$id");
+            $data = $client->get($this->urlAPI() . "/User/packet/packet-detail/$id");
             $response = json_decode($data->getBody()->getContents(), true);
             $packetdetail = $response['data'];
 
-            $datainfor = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+            $datainfor = $client->get($this->urlAPI() . '/User/get-user-infomation');
             $responseinfor = json_decode($datainfor->getBody()->getContents(), true);
             $infor = $responseinfor['data'];
 
@@ -378,12 +378,12 @@ class UserController extends ControllerBase
                 'packet_id' => $request->packet_id,
                 'content' => $request->content,
                 'address' => $request->address,
-                'code_ctv' => $request->code_ctv,
+                'code_User' => $request->code_User,
                 'content_payment' => $request->content_payment,
             ];
             $input = json_encode($body);
 
-            $url = $this->urlAPI() . '/ctv/packet/buy-packet';
+            $url = $this->urlAPI() . '/User/packet/buy-packet';
             $client = new Client([
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
@@ -428,11 +428,11 @@ class UserController extends ControllerBase
             if ($request->to_date) {
                 $to_date = date('Y-m-d', strtotime($request->to_date));
             }
-            $data = $client->get($this->urlAPI() . "/ctv/packet/list-buy-packet?status=$status&form_date=$form_date&to_date=$to_date");
+            $data = $client->get($this->urlAPI() . "/User/packet/list-buy-packet?status=$status&form_date=$form_date&to_date=$to_date");
             $response = json_decode($data->getBody()->getContents(), true);
             $buy = $response['data'];
 
-            $datainfor = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+            $datainfor = $client->get($this->urlAPI() . '/User/get-user-infomation');
             $responseinfor = json_decode($datainfor->getBody()->getContents(), true);
             $infor = $responseinfor['data'];
 
@@ -452,11 +452,11 @@ class UserController extends ControllerBase
                 ],
             ]);
 
-            $data = $client->get($this->urlAPI() . "/ctv/packet/buy-packet-detail/$id");
+            $data = $client->get($this->urlAPI() . "/User/packet/buy-packet-detail/$id");
             $response = json_decode($data->getBody()->getContents(), true);
             $buydetail = $response['data'];
 
-            $datainfor = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+            $datainfor = $client->get($this->urlAPI() . '/User/get-user-infomation');
             $responseinfor = json_decode($datainfor->getBody()->getContents(), true);
             $infor = $responseinfor['data'];
 
@@ -476,7 +476,7 @@ class UserController extends ControllerBase
                 ],
             ]);
 
-            $data = $client->delete($this->urlAPI() . "/ctv/packet/cancel-buy-packet/$id");
+            $data = $client->delete($this->urlAPI() . "/User/packet/cancel-buy-packet/$id");
             $response = json_decode($data->getBody()->getContents(), true);
             if ($response['status'] == 1) {
                 alert()->success($response['message']);
@@ -489,7 +489,7 @@ class UserController extends ControllerBase
             return back();
         }
     }
-    public function CTVrevenue(Request $request)
+    public function Userrevenue(Request $request)
     {
         try {
             $token = $request->cookie('token');
@@ -514,21 +514,21 @@ class UserController extends ControllerBase
             if ($request->to_date) {
                 $to_date = date('Y-m-d', strtotime($request->to_date));
             }
-            $data = $client->get($this->urlAPI() . "/ctv/revenue/list-revenue-ctv?name=$name&phone=$phone&from_date=$from_date&to_date=$to_date");
+            $data = $client->get($this->urlAPI() . "/User/revenue/list-revenue-User?name=$name&phone=$phone&from_date=$from_date&to_date=$to_date");
             $response = json_decode($data->getBody()->getContents(), true);
             $revenue = $response['data'];
 
-            $datainfor = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+            $datainfor = $client->get($this->urlAPI() . '/User/get-user-infomation');
             $responseinfor = json_decode($datainfor->getBody()->getContents(), true);
             $infor = $responseinfor['data'];
 
-            return view('includes.revenue.ctvrevenue', compact('revenue', 'infor'));
+            return view('includes.revenue.Userrevenue', compact('revenue', 'infor'));
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
         }
     }
-    public function CTVrevenueDetail(Request $request, $id)
+    public function UserrevenueDetail(Request $request, $id)
     {
         try {
             $token = $request->cookie('token');
@@ -537,21 +537,21 @@ class UserController extends ControllerBase
                     'Authorization' => 'Bearer ' . $token,
                 ],
             ]);
-            $data = $client->get($this->urlAPI() . "/ctv/revenue/revenue-ctv-detail/$id");
+            $data = $client->get($this->urlAPI() . "/User/revenue/revenue-User-detail/$id");
             $response = json_decode($data->getBody()->getContents(), true);
             $revenueDetail = $response['data'];
 
-            $datainfor = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+            $datainfor = $client->get($this->urlAPI() . '/User/get-user-infomation');
             $responseinfor = json_decode($datainfor->getBody()->getContents(), true);
             $infor = $responseinfor['data'];
 
-            return view('includes.revenue.ctvrevenue-detail', compact('revenueDetail', 'infor'));
+            return view('includes.revenue.Userrevenue-detail', compact('revenueDetail', 'infor'));
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
         }
     }
-    public function CTVcalculator(Request $request)
+    public function Usercalculator(Request $request)
     {
         try {
             $token = $request->cookie('token');
@@ -581,11 +581,11 @@ class UserController extends ControllerBase
                 $to_date = date('Y-m-d', strtotime($request->to_date));
             }
 
-            $data = $client->get($this->urlAPI() . "/ctv/revenue/list-add-revenue?name=$name&phone=$phone&from_date=$from_date&to_date=$to_date&status=$status");
+            $data = $client->get($this->urlAPI() . "/User/revenue/list-add-revenue?name=$name&phone=$phone&from_date=$from_date&to_date=$to_date&status=$status");
             $response = json_decode($data->getBody()->getContents(), true);
             $calculator = $response['data'];
 
-            $datainfor = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+            $datainfor = $client->get($this->urlAPI() . '/User/get-user-infomation');
             $responseinfor = json_decode($datainfor->getBody()->getContents(), true);
             $infor = $responseinfor['data'];
 
@@ -595,7 +595,7 @@ class UserController extends ControllerBase
             return back();
         }
     }
-    public function CTVcalculatorDetail(Request $request, $id)
+    public function UsercalculatorDetail(Request $request, $id)
     {
         try {
             $token = $request->cookie('token');
@@ -605,11 +605,11 @@ class UserController extends ControllerBase
                 ],
             ]);
 
-            $data = $client->get($this->urlAPI() . "/ctv/revenue/add-revenue-detail/$id");
+            $data = $client->get($this->urlAPI() . "/User/revenue/add-revenue-detail/$id");
             $response = json_decode($data->getBody()->getContents(), true);
             $addrevenueDetail = $response['data'];
 
-            $datainfor = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+            $datainfor = $client->get($this->urlAPI() . '/User/get-user-infomation');
             $responseinfor = json_decode($datainfor->getBody()->getContents(), true);
             $infor = $responseinfor['data'];
 
@@ -629,7 +629,7 @@ class UserController extends ControllerBase
                 'content' => $request->content,
             ];
             $input = json_encode($body);
-            $url = $this->urlAPI() . "/ctv/revenue/update-add-revenue/$id";
+            $url = $this->urlAPI() . "/User/revenue/update-add-revenue/$id";
             $client = new Client([
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
@@ -660,7 +660,7 @@ class UserController extends ControllerBase
                     'Content-Type' => 'application/json',
                 ],
             ]);
-            $req = $client->delete($this->urlAPI() . "/ctv/revenue/delete-add-revenue/$id");
+            $req = $client->delete($this->urlAPI() . "/User/revenue/delete-add-revenue/$id");
 
             $response = json_decode($req->getBody()->getContents(), true);
             if ($response['status'] == 1) {
@@ -748,7 +748,7 @@ class UserController extends ControllerBase
             $response = json_decode($data->getBody()->getContents(), true);
             $listdata = $response['data'];
 
-            $datainfor = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+            $datainfor = $client->get($this->urlAPI() . '/User/get-user-infomation');
             $responseinfor = json_decode($datainfor->getBody()->getContents(), true);
             $infor = $responseinfor['data'];
 
@@ -770,7 +770,7 @@ class UserController extends ControllerBase
             ];
             $input = json_encode($body);
 
-            $url = $this->urlAPI() . '/ctv/revenue/add-revenue';
+            $url = $this->urlAPI() . '/User/revenue/add-revenue';
             $client = new Client([
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
@@ -785,7 +785,7 @@ class UserController extends ControllerBase
             } else {
                 alert()->success($response['message']);
                 $url = redirect()
-                    ->route('ctv-tuyen-duoi')
+                    ->route('User-tuyen-duoi')
                     ->getTargetUrl();
                 return redirect($url);
             }
@@ -794,7 +794,7 @@ class UserController extends ControllerBase
             return back();
         }
     }
-    public function informationCtv(Request $request)
+    public function informationUser(Request $request)
     {
         try {
             $token = $request->cookie('token');
@@ -805,16 +805,16 @@ class UserController extends ControllerBase
                 ],
             ]);
 
-            $data = $client->get($this->urlAPI() . '/ctv/get-user-infomation');
+            $data = $client->get($this->urlAPI() . '/User/get-user-infomation');
             $response = json_decode($data->getBody()->getContents(), true);
             $information = $response['data'];
-            return view('includes.information-ctv', compact('information'));
+            return view('includes.information-User', compact('information'));
         } catch (\Throwable $th) {
             alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
         }
     }
-    public function updateInformationCtv(Request $request)
+    public function updateInformationUser(Request $request)
     {
         try {
             $token = $request->cookie('token');
@@ -828,7 +828,7 @@ class UserController extends ControllerBase
             $input = json_encode($body);
 
             $input = json_encode($body);
-            $url = $this->urlAPI() . '/ctv/update-ctv';
+            $url = $this->urlAPI() . '/User/update-User';
             $client = new Client([
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
@@ -840,7 +840,7 @@ class UserController extends ControllerBase
             $response = json_decode($req->getBody()->getContents(), true);
             if ($response['status'] == 1) {
                 alert()->success($response['message']);
-                return redirect()->route('informationCtv');
+                return redirect()->route('informationUser');
             } else {
                 alert()->error($response['message'], '');
                 return back();

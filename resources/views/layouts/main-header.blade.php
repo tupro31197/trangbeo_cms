@@ -56,7 +56,8 @@
               Admin
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <a class="dropdown-item" href="{{ route('informationUser') }}">
+                <a class="dropdown-item" href="">
+                    {{-- {{ route('informationUser') }} --}}
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-700"></i>
                     Thông tin tài khoản
                 </a>
@@ -87,7 +88,8 @@
             <div class="modal-body">Bạn có chắc chắn muốn đăng xuất?</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="{{ route('logout') }}">Đăng xuất</a>
+                <a class="btn btn-primary" href="">Đăng xuất</a>
+                {{-- {{ route('logout') }} --}}
             </div>
         </div>
     </div>
@@ -106,7 +108,8 @@
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">Đổi mật khẩu</h1>
                         </div>
-                        <form class="user" method="put" action="{{ route('PassUser') }}">
+                        <form class="user" method="put" action="">
+                            {{-- {{ route('PassUser') }} --}}
                             @csrf
                             @method('PUT')
                             <div class="form-group">

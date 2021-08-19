@@ -48,7 +48,7 @@ if (isset($token) && $token != null) {
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="/trang-chu" class="nav-link">
+                    <a href=" {{ asset('danh-muc') }}" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Danh mục
