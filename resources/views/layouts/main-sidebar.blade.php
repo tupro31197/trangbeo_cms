@@ -48,7 +48,7 @@ if (isset($token) && $token != null) {
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href=" {{ asset('danh-muc') }}" class="nav-link">
+                    <a href=" {{ asset('danh-muc/danh-muc-cha') }}" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Danh mục
@@ -64,7 +64,7 @@ if (isset($token) && $token != null) {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{asset('danh-sach-mua-san-pham/1')}}" class="nav-link">
+                    <a href="{{asset('voucher/danh-sach/1')}}" class="nav-link">
                         <i class=" nav-icon fas fa-folder-open"></i>
                         <p>
                             Voucher
@@ -72,7 +72,7 @@ if (isset($token) && $token != null) {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ asset('bai-dang/1')}}" class="nav-link">
+                    <a href="{{ asset('user/danh-sach/1')}}" class="nav-link">
                         <i class=" nav-icon fas fa-code"></i>
                         <p>
                             Người dùng
@@ -82,14 +82,57 @@ if (isset($token) && $token != null) {
                   
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ asset('don-hang/danh-sach/1')}}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Đơn hàng
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ asset('don-hang/danh-sach/1/trang-thai=0')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tất cả</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ asset('don-hang/danh-sach/1/trang-thai=1')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Đã đặt đơn</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ asset('don-hang/danh-sach/1/trang-thai=2')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Đang giao</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ asset('don-hang/danh-sach/1/trang-thai=3')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Đã hoàn thành</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ asset('don-hang/danh-sach/1/trang-thai=8')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Đã huỷ</p>
+                            </a>
+                        </li>
+                       
+                    </ul>
                    
+                </li>
+                <li class="nav-item">
+                    <a href="{{ asset('danh-gia/danh-sach/1')}}" class="nav-link">
+                        <i class=" nav-icon fas fa-check"></i>
+                        <p>
+                            Đánh giá
+                           
+                        </p>
+                    </a>
+                  
                 </li>
                
 

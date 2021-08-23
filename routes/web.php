@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\Product\ProductController;
-use App\Http\Controllers\Api\WalletController;
+use App\Http\Controllers\Api\VoucherController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\OrderController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -21,13 +22,43 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'welcome')->name('dang-nhap');
 Route::view('/dang-ki', 'includes.register');
 Route::post('/login', [UserController::class, 'login'])->name('login');
-Route::get('/trang-chu', [UserController::class, 'getUserInfo'])->name('trang-chu');
+Route::get('/trang-chu', [CategoryController::class, 'listCategory'])->name('trang-chu');
 
 Route::prefix('danh-muc')->name('category.')->group(function () {
     Route::get('/danh-muc-cha', [CategoryController::class, 'listCategory'])->name('listCategory');
     Route::post('/them-moi-danh-muc-cha', [CategoryController::class, 'addParrent'])->name('addParrent');
+    Route::post('/cap-nhat-danh-muc-cha', [CategoryController::class, 'updateParrent'])->name('updateParrent');
     Route::post('/xoa-danh-muc-cha/{id}', [CategoryController::class, 'deleteParrent'])->name('delete');
+
+    Route::post('/them-moi-danh-muc-mon-an', [CategoryController::class, 'addChild'])->name('addChild');
+    Route::get('/danh-muc-mon-an/{id}', [CategoryController::class, 'listChild'])->name('listChild');
+    Route::post('/cap-nhat-danh-muc-mon-an', [CategoryController::class, 'updateChild'])->name('updateChild');
+    Route::post('/xoa-danh-muc-mon-an/{id}', [CategoryController::class, 'deleteChild'])->name('deleteChild');
+
 });
 
+Route::prefix('voucher')->name('voucher.')->group(function () {
+    Route::get('/danh-sach/{page}', [VoucherController::class, 'listVoucher'])->name('listVoucher');
+    Route::post('/them-moi-danh-muc-cha', [CategoryController::class, 'addParrent'])->name('addParrent');
+    Route::post('/cap-nhat-danh-muc-cha', [CategoryController::class, 'updateParrent'])->name('updateParrent');
+    Route::post('/xoa-danh-muc-cha/{id}', [CategoryController::class, 'deleteParrent'])->name('delete');
+
+});
+
+Route::prefix('user')->name('user.')->group(function () {
+    Route::get('/danh-sach/{page}', [UserController::class, 'listUser'])->name('listUser');
+});
+
+Route::prefix('don-hang')->name('order.')->group(function () {
+    Route::get('/danh-sach/{page}/trang-thai={status}', [OrderController::class, 'listOrder'])->name('listOrder');
+    Route::post('/cap-nhat/{code}', [OrderController::class, 'updateOrder'])->name('updateOrder');
+    Route::post('/cap-nhat-danh-muc-cha', [CategoryController::class, 'updateParrent'])->name('updateParrent');
+    Route::post('/xoa-danh-muc-cha/{id}', [CategoryController::class, 'deleteParrent'])->name('delete');
+
+});
+
+Route::prefix('danh-gia')->name('rate.')->group(function () {
+    Route::get('/danh-sach/{page}', [UserController::class, 'listRate'])->name('listRate');
+});
 
 

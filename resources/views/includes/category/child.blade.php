@@ -35,7 +35,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-flex align-items-center justify-content-between">
-                            <h2 class="card-title">Danh sách danh mục</h2>
+                            <h2 class="card-title">Danh sách danh mục món ăn</h2>
                             <div class="float-right ml-auto">
                                 <a class="col-md-2 col-12" href="#" data-toggle="modal" data-target="#modalAddcategory">
                                     <button class="btn btn-primary btn-sm" style="">Thêm mới + </button>
@@ -50,28 +50,25 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>STT</th>
-                                        <th>Tên danh mục sản phẩm</th>
+                                        <th>Tên danh mục món ăn</th>
 
                                         <th>Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($categories as $index => $category)
-
+                                    @foreach ($child as $index => $category)
+                                       
                                         <tr>
-                                           
-                                                <th scope="row" style="vertical-align: middle ">{{ ++$index }}</th>
-                                                <td style="vertical-align: middle ">{{ $category['name'] }}</td>
-                                            
+
+                                            <th scope="row" style="vertical-align: middle ">{{ ++$index }}</th>
+                                            <td style="vertical-align: middle ">{{ $category['name'] }}</td>
+
                                             <td style="vertical-align: middle ">
-                                                <a href="{{ asset('danh-muc/danh-muc-mon-an/'.$category['id'])}}" class="btn btn-info btn-circle btn-sm ">
+                                                {{-- <a href="{{ asset('danh-muc/danh-muc-mon-an/'.$category['id'])}}" class="btn btn-info btn-circle btn-sm ">
                                                     <i class="fas fa-info-circle"></i>
-                                                </a>
-                                                <a href="" class="btn btn-info btn-circle btn-sm addProductByCate"
-                                                    data-toggle="modal" data-target="#modalAddChild{{ $category['id'] }}">
-                                                    <i class="fas fa-plus-circle"></i>
-                                                </a>
-                                                <a href="" data-toggle="modal" data-target="#update{{ $category['id'] }}"
+                                                </a> --}}
+                                                <a href="" data-toggle="modal"
+                                                    data-target="#updateChild{{ $category['id'] }}"
                                                     class="btn btn-warning btn-circle btn-sm editcategory">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
@@ -102,7 +99,7 @@
                                                             <button class="btn btn-secondary" type="button"
                                                                 data-dismiss="modal">Huỷ</button>
                                                             <form
-                                                                action="{{ route('category.delete', ['id' => $category['id']]) }}"
+                                                                action="{{ route('category.deleteChild', ['id' => $category['id']]) }}"
                                                                 method="post">
                                                                 @csrf
 
@@ -114,7 +111,7 @@
                                             </div>
 
                                             {{-- update --}}
-                                            <div class="modal fade" id="update{{ $category['id'] }}">
+                                            <div class="modal fade" id="updateChild{{ $category['id'] }}">
                                                 <div class="modal-dialog modal-dialog-centered ">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -125,7 +122,7 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action="{{ route('category.updateParrent') }}"
+                                                            <form action="{{ route('category.updateChild') }}"
                                                                 method="post" id="formUpdatecategory"
                                                                 enctype="multipart/form-data">
                                                                 @csrf
@@ -137,7 +134,7 @@
                                                                                 </label>
                                                                                 <input type="text" class="form-control"
                                                                                     id="inputTitle" required name="name"
-                                                                                    placeholder="ên danh mục sản phẩm"
+                                                                                    placeholder="Tên danh mục sản phẩm"
                                                                                     value="{{ $category['name'] }}">
                                                                                 <input type="text" hidden name="id"
                                                                                     value="{{ $category['id'] }}">
@@ -148,10 +145,10 @@
                                                                             <div class="form-group">
                                                                                 <label for="imageInput2">Ảnh</label>
                                                                                 <input type="file" class="form-control"
-                                                                                    id="imageInput2" required
+                                                                                    id="imageInput2" 
                                                                                     name="sampleFile">
-                                                                                <img src="{{ $category['image'] }}" alt=""
-                                                                                    class="image-url"
+                                                                                <img src="{{ $category['image'] }}"
+                                                                                    alt="" class="image-url"
                                                                                     style="max-width:100px">
                                                                                 <img src="" class="image-preview2"
                                                                                     style="max-width:100px">
@@ -286,16 +283,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('category.addParrent') }}" method="post" id="formAddcategory"
+                    <form action="{{ route('category.addChild') }}" method="post" id="formAddcategory"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 ">
                                     <div class="form-group">
-                                        <label for="inputTitle">Tên danh mục</label>
+                                        <label for="inputTitle">Tên danh mục món ăn</label>
                                         <input type="text" class="form-control" id="inputTitle" required name="name"
-                                            placeholder="Tên danh mục sản phẩm">
+                                            placeholder="Tên danh mục món ăn">
+                                        <input type="text" hidden name="category_parent_id" value=" {{ $id }} ">
                                     </div>
                                 </div>
                                 <div class="col-12 ">
