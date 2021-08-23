@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Product\ProductController;
 use App\Http\Controllers\Api\VoucherController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\DishController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -35,14 +36,19 @@ Route::prefix('danh-muc')->name('category.')->group(function () {
     Route::get('/danh-muc-mon-an/{id}', [CategoryController::class, 'listChild'])->name('listChild');
     Route::post('/cap-nhat-danh-muc-mon-an', [CategoryController::class, 'updateChild'])->name('updateChild');
     Route::post('/xoa-danh-muc-mon-an/{id}', [CategoryController::class, 'deleteChild'])->name('deleteChild');
+});
 
+Route::prefix('mon-an')->name('dish.')->group(function () {
+    Route::get('/danh-sach', [DishController::class, 'listDish'])->name('listDish');
+    Route::post('/them-moi-mon-an', [DishController::class, 'addParrent'])->name('addParrent');
+    Route::post('/cap-nhat-mon-an', [DishController::class, 'updateParrent'])->name('updateParrent');
+    Route::post('/xoa-mon-an/{id}', [DishController::class, 'deleteParrent'])->name('delete');
 });
 
 Route::prefix('voucher')->name('voucher.')->group(function () {
     Route::get('/danh-sach/{page}', [VoucherController::class, 'listVoucher'])->name('listVoucher');
     Route::post('/them-moi', [VoucherController::class, 'addVoucher'])->name('addVoucher');
     Route::post('/cap-nhat/{id}', [VoucherController::class, 'updateVoucher'])->name('updateVoucher');
-   
 });
 
 Route::prefix('user')->name('user.')->group(function () {
@@ -54,11 +60,8 @@ Route::prefix('don-hang')->name('order.')->group(function () {
     Route::post('/cap-nhat/{code}', [OrderController::class, 'updateOrder'])->name('updateOrder');
     Route::post('/cap-nhat-danh-muc-cha', [CategoryController::class, 'updateParrent'])->name('updateParrent');
     Route::post('/xoa-danh-muc-cha/{id}', [CategoryController::class, 'deleteParrent'])->name('delete');
-
 });
 
 Route::prefix('danh-gia')->name('rate.')->group(function () {
     Route::get('/danh-sach/{page}', [UserController::class, 'listRate'])->name('listRate');
 });
-
-
