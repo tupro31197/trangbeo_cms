@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'welcome')->name('dang-nhap');
 Route::view('/dang-ki', 'includes.register');
 Route::post('/login', [UserController::class, 'login'])->name('login');
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/trang-chu', [CategoryController::class, 'listCategory'])->name('trang-chu');
 
 Route::prefix('danh-muc')->name('category.')->group(function () {
@@ -46,9 +47,8 @@ Route::prefix('mon-an')->name('dish.')->group(function () {
 
 Route::prefix('voucher')->name('voucher.')->group(function () {
     Route::get('/danh-sach/{page}', [VoucherController::class, 'listVoucher'])->name('listVoucher');
-    Route::post('/them-moi-danh-muc-cha', [CategoryController::class, 'addParrent'])->name('addParrent');
-    Route::post('/cap-nhat-danh-muc-cha', [CategoryController::class, 'updateParrent'])->name('updateParrent');
-    Route::post('/xoa-danh-muc-cha/{id}', [CategoryController::class, 'deleteParrent'])->name('delete');
+    Route::post('/them-moi', [VoucherController::class, 'addVoucher'])->name('addVoucher');
+    Route::post('/cap-nhat/{id}', [VoucherController::class, 'updateVoucher'])->name('updateVoucher');
 });
 
 Route::prefix('user')->name('user.')->group(function () {

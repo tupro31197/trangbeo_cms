@@ -24,7 +24,10 @@ class RateController extends Controller
             $data = $client->get($this->urlAPI() . '/list-rate?page='.$page);
             $response = json_decode($data->getBody()->getContents(), true);
             $rates = $response['data'];
-
+            if ($response['status'] == 0) {
+                alert()->warning($response['message']);
+                return back();
+            }
             return view('includes.rate.index', compact('rates'));
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
