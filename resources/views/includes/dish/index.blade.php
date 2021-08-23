@@ -72,7 +72,9 @@
                                                 <a class="btn btn-danger btn-circle btn-sm" href="" data-toggle="modal"
                                                     data-target="#delete{{ $dish['id'] }}">
                                                     <i class="fas fa-trash"></i>
-
+                                                </a>
+                                                    <a class="btn btn-danger btn-circle btn-sm" href="{{route('rate.listRate', ['dish_id' => $dish['id'], 'dish' => $dish['name']])}}">
+                                                    <i class="fas fa-star"></i>
                                                 </a>
                                             </td>
                                             <!-- delete Modal-->
@@ -304,16 +306,6 @@
                                         <select name="category_parent_id">
                                             @foreach ($categories as $index => $category)
                                                 <option value="{{$category['id']}}">{{$category['name']}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12 ">
-                                    <div class="form-group">
-                                        <label for="inputType">Danh mục con</label>
-                                        <select name="category_child_id">
-                                            @foreach ($children as $index => $child)
-                                                <option value="{{$child['id']}}">{{$child['name']}}</option>
                                             @endforeach
                                         </select>
                                     </div>

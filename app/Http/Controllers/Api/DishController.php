@@ -12,32 +12,28 @@ class DishController extends ControllerBase
 {
     public function listDish(Request $request)
     {
-        try {
-            $token = $request->cookie('token');
+        // try {
+        $token = $request->cookie('token');
 
-            $client = new Client([
-                'headers' => [
-                    'token' => $token,
-                ],
-            ]);
+        $client = new Client([
+            'headers' => [
+                'token' => $token,
+            ],
+        ]);
 
-            $data = $client->get($this->urlAPI() . '/list-dish');
-            $response = json_decode($data->getBody()->getContents(), true);
-            $dishes = $response['data']['data'];
+        $data = $client->get($this->urlAPI() . '/list-dish');
+        $response = json_decode($data->getBody()->getContents(), true);
+        $dishes = $response['data']['data'];
 
-            $data2 = $client->get($this->urlAPI() . '/list-category');
-            $response2 = json_decode($data2->getBody()->getContents(), true);
-            $categories = $response2['data'];
+        $data2 = $client->get($this->urlAPI() . '/list-category');
+        $response2 = json_decode($data2->getBody()->getContents(), true);
+        $categories = $response2['data'];
 
-            $data3 = $client->get($this->urlAPI() . '/list-category-child');
-            $response3 = json_decode($data3->getBody()->getContents(), true);
-            $children = $response3['data'];
-
-            return view('includes.dish.index', compact('dishes', 'categories', 'children'));
-        } catch (\Throwable $th) {
-            alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-            return back();
-        }
+        return view('includes.dish.index', compact('dishes', 'categories'));
+        // } catch (\Throwable $th) {
+        //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+        //     return back();
+        // }
     }
 
     public function addParrent(Request $request)
