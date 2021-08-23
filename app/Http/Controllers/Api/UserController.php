@@ -164,22 +164,8 @@ class UserController extends ControllerBase
     {
         try {
             $token = $request->cookie('token');
-            $client = new Client();
-            $data = $client->get($this->urlAPI() . '/admin/logout', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $token,
-                    'Accept' => 'application/json',
-                ],
-            ]);
-            $response = json_decode($data->getBody()->getContents(), true);
-            // dd($response);
-
-            if ($response['status'] == 1) {
-                Cookie::queue(Cookie::forget('token'));
+            Cookie::queue('token', null);
                 return redirect()->route('dang-nhap');
-            }
-
-            return redirect()->route('trang-chu');
         } catch (\Throwable $th) {
             alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();

@@ -14,7 +14,7 @@ class CategoryController extends ControllerBase
     {
         try {
             $token = $request->cookie('token');
-
+          
             $client = new Client([
                 'headers' => [
                     'token' => $token,
@@ -24,17 +24,10 @@ class CategoryController extends ControllerBase
             $data = $client->get($this->urlAPI() . '/list-category');
             $response = json_decode($data->getBody()->getContents(), true);
             $categories = $response['data'];
-            // foreach ($categories as $key => $item) {
-            //     $body = [
-            //         'category_parent_id' => $item['id'],
-            //     ];
-            //     $input = json_encode($body);
-            //     $data = $client->get($this->urlAPI() . '/list-category-child', ['body' => $input]);
-            //     $response = json_decode($data->getBody()->getContents(), true);
-            //     $child[$key] = $response['data'];
-            // }
-            // dd($child);
-
+            if ($response['status'] == 0) {
+                alert()->warning($response['message']);
+                return back();
+            }
             return view('includes.category.index', compact('categories'));
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
@@ -241,7 +234,10 @@ class CategoryController extends ControllerBase
             $response = json_decode($data->getBody()->getContents(), true);
             $child = $response['data'];
            
-
+            if ($response['status'] == 0) {
+                alert()->warning($response['message']);
+                return back();
+            }
             return view('includes.category.child', compact('id','child'));
         // } catch (\Throwable $th) {
         //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
