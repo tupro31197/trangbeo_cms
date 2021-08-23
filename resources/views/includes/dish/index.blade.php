@@ -99,6 +99,9 @@ $currentPage = $dishes['current_page'];
                                                 <p>Đã bán: {{ $dish['total_count_sold'] }}</p>
                                             </td>
                                             <td style="vertical-align: middle ">
+                                                <a class="btn btn-info btn-circle btn-sm" href="{{route('dish.detailDish', ['id' => $dish['id'] ])}}">
+                                                    <i class="fas fa-info-circle"></i>
+                                                </a>
                                                 <a href="" data-toggle="modal" data-target="#update{{ $dish['id'] }}"
                                                     class="btn btn-warning btn-circle btn-sm editcategory">
                                                     <i class="fas fa-edit"></i>
@@ -108,7 +111,7 @@ $currentPage = $dishes['current_page'];
                                                     data-target="#delete{{ $dish['id'] }}">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
-                                                    <a class="btn btn-danger btn-circle btn-sm" href="{{route('rate.listRate', ['dish_id' => $dish['id'], 'dish' => $dish['name']])}}">
+                                                    <a class="btn btn-warning btn-circle btn-sm" href="{{route('rate.listRate', ['dish_id' => $dish['id'], 'dish' => $dish['name']])}}">
                                                     <i class="fas fa-star"></i>
                                                 </a>
                                             </td>

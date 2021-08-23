@@ -64,6 +64,28 @@ class DishController extends ControllerBase
         //     return back();
     }
 
+    public function detailDish(Request $request, $id)
+    {
+        // try {
+        $token = $request->cookie('token');
+
+        $client = new Client([
+            'headers' => [
+                'token' => $token,
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        $data = $client->get($this->urlAPI() . '/detail-dish?dish_id=' . $id);
+        $response = json_decode($data->getBody()->getContents(), true);
+        $detail = $response['data'];
+
+        return view('includes.dish.detail', compact('detail'));
+        // } catch (\Throwable $th) {
+        //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+        //     return back();
+    }
+
     public function addDish(Request $request)
     {
         // try{

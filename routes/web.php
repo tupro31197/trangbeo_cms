@@ -41,6 +41,7 @@ Route::prefix('danh-muc')->name('category.')->group(function () {
 
 Route::prefix('mon-an')->name('dish.')->group(function () {
     Route::get('/danh-sach/{page}', [DishController::class, 'listDish'])->name('listDish');
+    Route::get('/chi-tiet/{id}', [DishController::class, 'detailDish'])->name('detailDish');
     Route::post('/them-moi-mon-an', [DishController::class, 'addDish'])->name('addDish');
     Route::post('/cap-nhat-mon-an', [DishController::class, 'updateDish'])->name('updateDish');
     Route::post('/xoa-mon-an/{id}', [DishController::class, 'deleteParrent'])->name('delete');
