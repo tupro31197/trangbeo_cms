@@ -124,17 +124,6 @@ if (isset($token) && $token != null) {
                     </ul>
                    
                 </li>
-                <li class="nav-item">
-                    <a href="{{ asset('danh-gia/danh-sach/1')}}" class="nav-link">
-                        <i class=" nav-icon fas fa-check"></i>
-                        <p>
-                            Đánh giá
-                           
-                        </p>
-                    </a>
-                  
-                </li>
-               
 
             </ul>
         </nav>

@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\VoucherController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\DishController;
-
+use App\Http\Controllers\Api\RateController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,5 +64,5 @@ Route::prefix('don-hang')->name('order.')->group(function () {
 });
 
 Route::prefix('danh-gia')->name('rate.')->group(function () {
-    Route::get('/danh-sach/{page}', [UserController::class, 'listRate'])->name('listRate');
+    Route::get('/', [RateController::class, 'listRate'])->name('listRate');
 });

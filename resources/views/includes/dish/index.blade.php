@@ -107,7 +107,9 @@ $currentPage = $dishes['current_page'];
                                                 <a class="btn btn-danger btn-circle btn-sm" href="" data-toggle="modal"
                                                     data-target="#delete{{ $dish['id'] }}">
                                                     <i class="fas fa-trash"></i>
-
+                                                </a>
+                                                    <a class="btn btn-danger btn-circle btn-sm" href="{{route('rate.listRate', ['dish_id' => $dish['id'], 'dish' => $dish['name']])}}">
+                                                    <i class="fas fa-star"></i>
                                                 </a>
                                             </td>
                                             <!-- delete Modal-->
