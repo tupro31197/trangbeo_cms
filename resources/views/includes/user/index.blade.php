@@ -46,7 +46,7 @@ $currentPage = $users['current_page'];
                                             @endphp
                                             <tr>
                                                 <td>{{ ++$index }}</td>
-                                                <td class="text-center"><img src="{{ $item['avatar']}}" alt="" width="100px" height="100px" style="border-radius: 50px"></td>
+                                                <td class="text-center"><img src="{{ $item['avatar']}}" alt="" width="100px" height="100px" style="border-radius: 50px; object-fit:cover"></td>
                                                 <td>{{ $item['name']}}</td>
                                                 <td>{{ $item['phone']}}</td>
                                                 <td style="color: {{$color}}">{{ $status }}</td>

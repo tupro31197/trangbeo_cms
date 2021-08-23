@@ -56,7 +56,7 @@ if (isset($token) && $token != null) {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{asset('danh-sach-san-pham/1')}}" class="nav-link">
+                    <a href="{{asset('mon-an/danh-sach/1')}}" class="nav-link">
                         <i class="nav-icon fas fa-book fa-fw"></i>
                         <p>
                             Món ăn
@@ -115,7 +115,7 @@ if (isset($token) && $token != null) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ asset('don-hang/danh-sach/1/trang-thai=8')}}" class="nav-link">
+                            <a href="{{ asset('don-hang/danh-sach/1/trang-thai=4')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Đã huỷ</p>
                             </a>
@@ -124,17 +124,6 @@ if (isset($token) && $token != null) {
                     </ul>
                    
                 </li>
-                <li class="nav-item">
-                    <a href="{{ asset('danh-gia/danh-sach/1')}}" class="nav-link">
-                        <i class=" nav-icon fas fa-check"></i>
-                        <p>
-                            Đánh giá
-                           
-                        </p>
-                    </a>
-                  
-                </li>
-               
 
             </ul>
         </nav>

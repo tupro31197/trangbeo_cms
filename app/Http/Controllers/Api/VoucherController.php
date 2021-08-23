@@ -34,102 +34,76 @@ class VoucherController extends ControllerBase
 
     public function addVoucher(Request $request)
     {
-        // try{
-        $token = $request->cookie('token');
+        // try {
+            $token = $request->cookie('token');
 
-        $category = [];
-        foreach ($request->except('_token') as $key => $value) {
-            if ($key == 'sampleFile') {
-                if ($request->hasFile('sampleFile')) {
-                    $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
-                }
-            } else {
-                $category[] = [
-                    'name' => $key,
-                    'contents' => $value,
-                ];
+            $body = [
+                'percent' => $request->percent,
+            ];
+            $input = json_encode($body);
+            $client = new Client([
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'token' => $token,
+                ],
+            ]);
+           
+         $url = $this->urlAPI() . '/create-voucher';
+          
+            $req = $client->post($url, ['body' => $input]);
+            $response = json_decode($req->getBody()->getContents(), true);
+          
+            if ($response['status'] == 0) {
+                alert()->warning($response['message']);
+                return back();
             }
-        }
-
-        $url = $this->urlAPI() . '/create-category-parent';
-        $client = new Client([
-            'headers' => [
-                'token' => $token,
-                'Content-Type' => 'multipart/form-data',
-            ],
-        ]);
-        $req = $client->post(
-            $url,
-            [
-                'multipart' => $category,
-            ],
-            // ['form_params']
-        );
-        // dd($req);
-
-        $response = json_decode($req->getBody()->getContents(), true);
-        // dd($response);
-        if ($response['status'] == 1) {
             alert()->success($response['message']);
-            return redirect()->route('category.listCategory');
-        } else {
-            alert()->error($response['message'], '');
-            return back();
-        }
+            $url = redirect()
+                ->route('voucher.listVoucher', ['page' => 1])
+                ->getTargetUrl();
+
+            return redirect($url);
         // } catch (\Throwable $th) {
-        //         alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //         return back();
-        //     }
+        //     alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+        //     return back();
+        // }
     }
 
-    public function updateParrent(Request $request)
+    public function updateVoucher(Request $request, $id)
     {
-        // try{
-        $token = $request->cookie('token');
+        // try {
+            $token = $request->cookie('token');
 
-        $category = [];
-        foreach ($request->except('_token') as $key => $value) {
-            if ($key == 'sampleFile') {
-                if ($request->hasFile('sampleFile')) {
-                    $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
-                }
-            } else {
-                $category[] = [
-                    'name' => $key,
-                    'contents' => $value,
-                ];
+            $body = [
+                'voucher_id' => $id,
+            ];
+            $input = json_encode($body);
+            $client = new Client([
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'token' => $token,
+                ],
+            ]);
+           
+         $url = $this->urlAPI() . '/update-voucher';
+          
+            $req = $client->post($url, ['body' => $input]);
+            $response = json_decode($req->getBody()->getContents(), true);
+          
+            if ($response['status'] == 0) {
+                alert()->warning($response['message']);
+                return back();
             }
-        }
-
-        $url = $this->urlAPI() . '/update-category-parent';
-        $client = new Client([
-            'headers' => [
-                'token' => $token,
-                'Content-Type' => 'multipart/form-data',
-            ],
-        ]);
-        $req = $client->post(
-            $url,
-            [
-                'multipart' => $category,
-            ],
-            // ['form_params']
-        );
-        // dd($req);
-
-        $response = json_decode($req->getBody()->getContents(), true);
-        // dd($response);
-        if ($response['status'] == 1) {
             alert()->success($response['message']);
-            return redirect()->route('category.listCategory');
-        } else {
-            alert()->error($response['message'], '');
-            return back();
-        }
+            $url = redirect()
+                ->route('voucher.listVoucher', ['page' => 1])
+                ->getTargetUrl();
+
+            return redirect($url);
         // } catch (\Throwable $th) {
-        //         alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //         return back();
-        //     }
+        //     alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+        //     return back();
+        // }
     }
 
     public function deleteParrent(Request $request, $id)

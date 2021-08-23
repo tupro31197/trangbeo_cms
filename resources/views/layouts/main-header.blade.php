@@ -88,8 +88,8 @@
             <div class="modal-body">Bạn có chắc chắn muốn đăng xuất?</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="">Đăng xuất</a>
-                {{-- {{ route('logout') }} --}}
+                <a class="btn btn-primary" href=" {{ route('logout') }}">Đăng xuất</a>
+               
             </div>
         </div>
     </div>

@@ -8,9 +8,9 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 
-class RateController extends Controller
+class RateController extends ControllerBase
 {
-    public function listRate(Request $request, $page)
+    public function listRate(Request $request)
     {
         try {
             $token = $request->cookie('token');
@@ -20,12 +20,15 @@ class RateController extends Controller
                     'token' => $token,
                 ],
             ]);
-
-            $data = $client->get($this->urlAPI() . '/list-rate?page='.$page);
+            $dish = $request->dish;
+            $data = $client->get($this->urlAPI() . '/list-rate?dish_id=' . $request->dish_id);
             $response = json_decode($data->getBody()->getContents(), true);
-            $rates = $response['data'];
-
-            return view('includes.rate.index', compact('rates'));
+            $ratings = $response['data']['data'];
+            if ($response['status'] == 0) {
+                alert()->warning($response['message']);
+                return back();
+            }
+            return view('includes.rating.index', compact('ratings', 'dish'));
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
