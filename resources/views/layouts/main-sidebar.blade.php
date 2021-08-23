@@ -56,7 +56,7 @@ if (isset($token) && $token != null) {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{asset('danh-sach-san-pham/1')}}" class="nav-link">
+                    <a href="{{asset('mon-an/danh-sach')}}" class="nav-link">
                         <i class="nav-icon fas fa-book fa-fw"></i>
                         <p>
                             Món ăn

@@ -162,7 +162,6 @@ class CategoryController extends ControllerBase
         $req = $client->post($url, ['body' => $input]);
         // dd($req);
         $response = json_decode($req->getBody()->getContents(), true);
-
         if ($response['status'] == 1) {
             alert()->success($response['message']);
         } else {
@@ -214,10 +213,8 @@ class CategoryController extends ControllerBase
         // dd($response);
         if ($response['status'] == 1) {
             alert()->success($response['message']);
-            
         } else {
             alert()->error($response['message'], '');
-           
         }
         return back();
         // } catch (\Throwable $th) {
@@ -229,20 +226,20 @@ class CategoryController extends ControllerBase
     public function listChild(Request $request, $id)
     {
         // try {
-            $token = $request->cookie('token');
+        $token = $request->cookie('token');
 
-            $client = new Client([
-                'headers' => [
-                    'token' => $token,
-                ],
-            ]);
-        
-            $data = $client->get($this->urlAPI() . '/list-category-child?category_parent_id='.$id);
-            $response = json_decode($data->getBody()->getContents(), true);
-            $child = $response['data'];
-           
+        $client = new Client([
+            'headers' => [
+                'token' => $token,
+            ],
+        ]);
 
-            return view('includes.category.child', compact('id','child'));
+        $data = $client->get($this->urlAPI() . '/list-category-child?category_parent_id=' . $id);
+        $response = json_decode($data->getBody()->getContents(), true);
+        $child = $response['data'];
+
+
+        return view('includes.category.child', compact('id', 'child'));
         // } catch (\Throwable $th) {
         //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
         //     return back();
@@ -252,30 +249,30 @@ class CategoryController extends ControllerBase
     public function deleteChild(Request $request, $id)
     {
         try {
-        $token = $request->cookie('token');
+            $token = $request->cookie('token');
 
-        $body = [
-            'id' => $id,
-        ];
-        $input = json_encode($body);
+            $body = [
+                'id' => $id,
+            ];
+            $input = json_encode($body);
 
-        $url = $this->urlAPI() . '/delete-category-child';
-        $client = new Client([
-            'headers' => [
-                'token' => $token,
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-        $req = $client->post($url, ['body' => $input]);
-        // dd($req);
-        $response = json_decode($req->getBody()->getContents(), true);
+            $url = $this->urlAPI() . '/delete-category-child';
+            $client = new Client([
+                'headers' => [
+                    'token' => $token,
+                    'Content-Type' => 'application/json',
+                ],
+            ]);
+            $req = $client->post($url, ['body' => $input]);
+            // dd($req);
+            $response = json_decode($req->getBody()->getContents(), true);
 
-        if ($response['status'] == 1) {
-            alert()->success($response['message']);
-        } else {
-            alert()->warning($response['message']);
-        }
-        return back();
+            if ($response['status'] == 1) {
+                alert()->success($response['message']);
+            } else {
+                alert()->warning($response['message']);
+            }
+            return back();
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
@@ -284,51 +281,50 @@ class CategoryController extends ControllerBase
 
     public function updateChild(Request $request)
     {
-        try{
-        $token = $request->cookie('token');
+        try {
+            $token = $request->cookie('token');
 
-        $category = [];
-        foreach ($request->except('_token') as $key => $value) {
-            if ($key == 'sampleFile') {
-                if ($request->hasFile('sampleFile')) {
-                    $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
+            $category = [];
+            foreach ($request->except('_token') as $key => $value) {
+                if ($key == 'sampleFile') {
+                    if ($request->hasFile('sampleFile')) {
+                        $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
+                    }
+                } else {
+                    $category[] = [
+                        'name' => $key,
+                        'contents' => $value,
+                    ];
                 }
+            }
+
+            $url = $this->urlAPI() . '/update-category-child';
+            $client = new Client([
+                'headers' => [
+                    'token' => $token,
+                    'Content-Type' => 'multipart/form-data',
+                ],
+            ]);
+            $req = $client->post(
+                $url,
+                [
+                    'multipart' => $category,
+                ],
+                // ['form_params']
+            );
+            // dd($req);
+
+            $response = json_decode($req->getBody()->getContents(), true);
+            // dd($response);
+            if ($response['status'] == 1) {
+                alert()->success($response['message']);
             } else {
-                $category[] = [
-                    'name' => $key,
-                    'contents' => $value,
-                ];
+                alert()->error($response['message'], '');
             }
-        }
-
-        $url = $this->urlAPI() . '/update-category-child';
-        $client = new Client([
-            'headers' => [
-                'token' => $token,
-                'Content-Type' => 'multipart/form-data',
-            ],
-        ]);
-        $req = $client->post(
-            $url,
-            [
-                'multipart' => $category,
-            ],
-            // ['form_params']
-        );
-        // dd($req);
-
-        $response = json_decode($req->getBody()->getContents(), true);
-        // dd($response);
-        if ($response['status'] == 1) {
-            alert()->success($response['message']);
-        } else {
-            alert()->error($response['message'], '');
-            
-        }
-        return back();
+            return back();
         } catch (\Throwable $th) {
-                alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-                return back();
-            }
+            alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
     }
 }
