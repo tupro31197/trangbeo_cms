@@ -323,4 +323,25 @@ class CategoryController extends ControllerBase
             return back();
         }
     }
+
+    public function listChildFromParrent(Request $request)
+    {
+        // try {
+        $token = $request->cookie('token');
+
+        $client = new Client([
+            'headers' => [
+                'token' => $token,
+            ],
+        ]);
+        $id = $request->id;
+        $data = $client->get($this->urlAPI() . '/list-category-child?category_parent_id=' . $id);
+        $response = json_decode($data->getBody()->getContents(), true);
+        $child = $response['data'];
+        return $child;
+        // } catch (\Throwable $th) {
+        //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+        //     return back();
+        // }
+    }
 }

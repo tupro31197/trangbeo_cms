@@ -34,14 +34,15 @@ Route::prefix('danh-muc')->name('category.')->group(function () {
 
     Route::post('/them-moi-danh-muc-mon-an', [CategoryController::class, 'addChild'])->name('addChild');
     Route::get('/danh-muc-mon-an/{id}', [CategoryController::class, 'listChild'])->name('listChild');
+    Route::get('/tim-kiem', [CategoryController::class, 'listChildFromParrent'])->name('listChildFromParrent');
     Route::post('/cap-nhat-danh-muc-mon-an', [CategoryController::class, 'updateChild'])->name('updateChild');
     Route::post('/xoa-danh-muc-mon-an/{id}', [CategoryController::class, 'deleteChild'])->name('deleteChild');
 });
 
 Route::prefix('mon-an')->name('dish.')->group(function () {
-    Route::get('/danh-sach', [DishController::class, 'listDish'])->name('listDish');
-    Route::post('/them-moi-mon-an', [DishController::class, 'addParrent'])->name('addParrent');
-    Route::post('/cap-nhat-mon-an', [DishController::class, 'updateParrent'])->name('updateParrent');
+    Route::get('/danh-sach/{page}', [DishController::class, 'listDish'])->name('listDish');
+    Route::post('/them-moi-mon-an', [DishController::class, 'addDish'])->name('addDish');
+    Route::post('/cap-nhat-mon-an', [DishController::class, 'updateDish'])->name('updateDish');
     Route::post('/xoa-mon-an/{id}', [DishController::class, 'deleteParrent'])->name('delete');
 });
 

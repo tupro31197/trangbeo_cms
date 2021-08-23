@@ -7,40 +7,64 @@ use App\Helpers\Helpers;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 
 class DishController extends ControllerBase
 {
-    public function listDish(Request $request)
+    public function listDish(Request $request, $page)
     {
-        try {
-            $token = $request->cookie('token');
+        // try {
+        $token = $request->cookie('token');
 
-            $client = new Client([
-                'headers' => [
-                    'token' => $token,
-                ],
-            ]);
+        $client = new Client([
+            'headers' => [
+                'token' => $token,
+                'Content-Type' => 'application/json',
+            ],
+        ]);
 
-            $data = $client->get($this->urlAPI() . '/list-dish');
-            $response = json_decode($data->getBody()->getContents(), true);
-            $dishes = $response['data']['data'];
+        $body = Session::get('category');
 
-            $data2 = $client->get($this->urlAPI() . '/list-category');
-            $response2 = json_decode($data2->getBody()->getContents(), true);
-            $categories = $response2['data'];
-
-            $data3 = $client->get($this->urlAPI() . '/list-category-child');
-            $response3 = json_decode($data3->getBody()->getContents(), true);
-            $children = $response3['data'];
-
-            return view('includes.dish.index', compact('dishes', 'categories', 'children'));
-        } catch (\Throwable $th) {
-            alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-            return back();
+        if (isset($request->category_parent_id)) {
+            $category_parent_id = $request->category_parent_id;
+        } elseif (isset($body['category_parent_id']) && isset($body['page']) && $page != $body['page']) {
+            $category_parent_id = $body['category_parent_id'];
+        } else {
+            $category_parent_id = '';
         }
+
+        if (isset($request->category_child_id)) {
+            $category_child_id = $request->category_child_id;
+        } elseif (isset($body['category_child_id']) && isset($body['page']) && $page != $body['page']) {
+            $category_child_id = $body['category_child_id'];
+        } else {
+            $category_child_id = '';
+        }
+
+        $body = [
+            'category_parent_id' => $category_parent_id,
+            'category_child_id' => $category_child_id,
+            'page' => $page,
+        ];
+
+        Session::put('category', $body);
+
+
+        $data = $client->get($this->urlAPI() . '/list-dish?paginate=12&page=' . $page . '&category_parent_id=' . $category_parent_id . '&category_child_id' . $category_child_id);
+        $response = json_decode($data->getBody()->getContents(), true);
+        $dishes = $response['data'];
+
+        $data2 = $client->get($this->urlAPI() . '/list-category');
+        $response2 = json_decode($data2->getBody()->getContents(), true);
+        $categories = $response2['data'];
+
+        return view('includes.dish.index', compact('dishes', 'categories', 'category_parent_id', 'category_child_id'));
+        // } catch (\Throwable $th) {
+        //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+        //     return back();
     }
 
-    public function addParrent(Request $request)
+    public function addDish(Request $request)
     {
         // try{
         $token = $request->cookie('token');
@@ -79,7 +103,7 @@ class DishController extends ControllerBase
         // dd($response);
         if ($response['status'] == 1) {
             alert()->success($response['message']);
-            return redirect()->route('dish.listDish');
+            return redirect()->route('dish.listDish', ['page' => 1]);
         } else {
             alert()->error($response['message'], '');
             return back();
@@ -90,7 +114,7 @@ class DishController extends ControllerBase
         //     }
     }
 
-    public function updateParrent(Request $request)
+    public function updateDish(Request $request)
     {
         // try{
         $token = $request->cookie('token');
@@ -128,7 +152,7 @@ class DishController extends ControllerBase
         // dd($response);
         if ($response['status'] == 1) {
             alert()->success($response['message']);
-            return redirect()->route('category.listDish');
+            return redirect()->route('dish.listDish', ['page' => 1]);
         } else {
             alert()->error($response['message'], '');
             return back();

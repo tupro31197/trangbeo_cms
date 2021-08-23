@@ -1,3 +1,8 @@
+@php
+$totalPage = $dishes['total_page'];
+$currentPage = $dishes['current_page'];
+
+@endphp
 @extends('layouts.app')
 @section('title-page', 'Món ăn')
 @section('after-css')
@@ -6,36 +11,58 @@
 @section('content')
     <section class="content">
         <div class="container-fluid">
-            {{-- <div class="row">
+            <div class="text-center">
+                <h2>Danh sách món ăn:</h2>
+            </div>
+            <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="" method="GET" id="formSearchData">
+                            <form action="{{ asset('mon-an/danh-sach/1') }}" method="GET" id="formSearchData">
                                 <div class="row d-flex align-items-end">
                                     <div class="col-12 col-md-2">
-                                        <label>Tiêu đề</label>
+                                        <label>Danh mục cha</label>
                                         <div class="input-group">
-                                            <input type="text" autocomplete="off" class="form-control" name="name"
-                                                value="{{ request('name') }}" placeholder="Tiêu đề" id="startdatepicker">
+                                            <select name="category_parent_id" id="categoryParrent" class="form-control">
+                                                <option value="">Tất cả</option>
+                                                @foreach ($categories as $index => $category)
+                                                    <option value="{{ $category['id'] }}" @if ($category['id'] == $category_parent_id)
+                                                        {{ 'selected' }}
+                                                @endif>{{ $category['name'] }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <!-- input-group -->
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <label>Danh mục con</label>
+                                        <input type="text" id="id_child" value="{{$category_child_id}}" hidden>
+                                        <div class="input-group">
+                                            <select name="category_child_id" id="categoryChild" class="form-control">
+                                                <option value="">Tất cả <option>
+
+                                            </select>
                                         </div>
                                         <!-- input-group -->
                                     </div>
 
 
                                     <button class="btn btn-primary float-right ml-auto"
-                                        style="height: 40px; float:right">Search</button>
+                                        style="height: 40px; float:right">Tìm kiếm</button>
 
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
+
             <div class="row">
+
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-flex align-items-center justify-content-between">
-                            <h2 class="card-title">Danh sách món ăn</h2>
+
                             <div class="float-right ml-auto">
                                 <a class="col-md-2 col-12" href="#" data-toggle="modal" data-target="#modalAddcategory">
                                     <button class="btn btn-primary btn-sm" style="">Thêm mới + </button>
@@ -50,19 +77,27 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>STT</th>
+                                        <th>Ảnh</th>
                                         <th>Tên món ăn</th>
-
+                                        <th>Giá</th>
+                                        <th>Số lượng</th>
                                         <th>Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($dishes as $index => $dish)
+                                    @foreach ($dishes['data'] as $index => $dish)
 
                                         <tr>
-                                           
-                                                <th scope="row" style="vertical-align: middle ">{{ ++$index }}</th>
-                                                <td style="vertical-align: middle ">{{ $dish['name'] }}</td>
-                                            
+
+                                            <th scope="row" style="vertical-align: middle ">{{ ++$index }}</th>
+                                            <td class="text-center"><img src="{{ $dish['image'] }}" alt="" width="100px"
+                                                    height="100px" style="border-radius: 50px; object-fit:cover"></td>
+                                            <td style="vertical-align: middle ">{{ $dish['name'] }}</td>
+                                            <td>{{ number_format($dish['money']) }}</td>
+                                            <td>
+                                                <p>Số lượng: {{ $dish['count'] }}</p> <br>
+                                                <p>Đã bán: {{ $dish['total_count_sold'] }}</p>
+                                            </td>
                                             <td style="vertical-align: middle ">
                                                 <a href="" data-toggle="modal" data-target="#update{{ $dish['id'] }}"
                                                     class="btn btn-warning btn-circle btn-sm editcategory">
@@ -89,7 +124,8 @@
                                                                 <span aria-hidden="true">×</span>
                                                             </button>
                                                         </div>
-                                                        <div class="modal-body">Tên món ăn: {{ $dish['name'] }}
+                                                        <div class="modal-body">
+                                                            Tên món ăn: {{ $dish['name'] }}
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-secondary" type="button"
@@ -118,40 +154,42 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action="{{ route('dish.updateParrent') }}"
-                                                                method="post" id="formUpdatecategory"
-                                                                enctype="multipart/form-data">
+                                                            <form action="{{ route('dish.updateDish') }}" method="post"
+                                                                id="formAddDish" enctype="multipart/form-data">
                                                                 @csrf
                                                                 <div class="card-body">
                                                                     <div class="row">
                                                                         <div class="col-12 ">
                                                                             <div class="form-group">
-                                                                                <label for="inputTitle">Tên món ăn:
-                                                                                </label>
+                                                                                <label for="inputTitle">Tên món ăn</label>
                                                                                 <input type="text" class="form-control"
                                                                                     id="inputTitle" required name="name"
-                                                                                    placeholder="Tên món ăn"
+                                                                                    placeholder="Tên danh mục sản phẩm"
                                                                                     value="{{ $dish['name'] }}">
-                                                                                <input type="text" hidden name="id"
-                                                                                    value="{{ $dish['id'] }}">
+                                                                                <input type="number" name="dish_id"
+                                                                                    value="{{ $dish['id'] }}" hidden>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12 ">
+                                                                            <div class="form-group">
+                                                                                <label for="inputPrice">Giá</label>
+                                                                                <input type="text" class="form-control"
+                                                                                    id="inputPrice" required name="money"
+                                                                                    placeholder="Giá sản phẩm"
+                                                                                    value="{{ $dish['money'] }}">
                                                                             </div>
                                                                         </div>
 
                                                                         <div class="col-12 ">
                                                                             <div class="form-group">
-                                                                                <label for="imageInput2">Ảnh</label>
+                                                                                <label for="image">Ảnh</label>
                                                                                 <input type="file" class="form-control"
-                                                                                    id="imageInput2" required
-                                                                                    name="sampleFile">
+                                                                                    id="image" name="sampleFile">
                                                                                 <img src="{{ $dish['image'] }}" alt=""
-                                                                                    class="image-url"
-                                                                                    style="max-width:100px">
-                                                                                <img src="" class="image-preview2"
-                                                                                    style="max-width:100px">
+                                                                                    width="100px" height="100px"
+                                                                                    style="object-fit: cover">
                                                                             </div>
                                                                         </div>
-
-
                                                                     </div>
                                                                 </div>
                                                                 <!-- /.card-body -->
@@ -159,8 +197,8 @@
                                                                 <div class="modal-footer justify-content-between">
                                                                     <button type="button" class="btn btn-default"
                                                                         data-dismiss="modal">Đóng</button>
-                                                                    <button type="submit" class="btn btn-primary">Lưu
-                                                                        lại</button>
+                                                                    <button type="submit" class="btn btn-primary">Cập
+                                                                        nhật</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -170,92 +208,52 @@
                                                 </div>
                                                 <!-- /.modal-dialog -->
                                             </div>
-                                            {{-- ---------- --}}
-                                            <div class="modal fade" id="modalAddChild{{ $dish['id'] }}">
-                                                <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Thêm mới danh mục món ăn</h4>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form action="{{ route('category.addChild') }}" method="POST"
-                                                                enctype="multipart/form-data">
-                                                                @csrf
-                                                                <div class="card-body">
-                                                                    <div class="row">
-                                                                        <div class="col-12 col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label for="inputNameProduct">Tên danh
-                                                                                    mục</label>
-                                                                                <input type="text" class="form-control"
-                                                                                    id="inputNameProduct" name="name"
-                                                                                    value="" placeholder="Tên sản phẩm">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label for="inputNameProduct">Danh mục
-                                                                                    cha</label>
-                                                                                <input type="text" class="form-control"
-                                                                                    id="name_cate" readonly
-                                                                                    value="{{ $dish['name'] }}">
-                                                                                <input type="text" class="form-control"
-                                                                                    value="{{ $dish['id'] }}"
-                                                                                    name="category_parent_id" hidden>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row">
-                                                                        <div class="col-12 col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label for="exampleInputFile">Ảnh</label>
-                                                                                <div class="image-input">
-                                                                                    <input type="file" accept="image/*"
-                                                                                        id="imageInput" name="sampleFile">
-                                                                                    <img src="" class="image-preview"
-                                                                                        style="max-width:100px">
-
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-
-                                                                </div>
-                                                                <!-- /.card-body -->
-
-                                                                <div class="card-footer">
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary">Lưu</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-
-                                                    </div>
-                                                    <!-- /.modal-content -->
-                                                </div>
-                                                <!-- /.modal-dialog -->
-                                            </div>
+                                            
+                                          
                                         </tr>
+                                        
 
                                     @endforeach
-
+                                    <td colspan="6" class="text-center" boder:none>
+                                        {{-- ======= phân trang ======== --}}
+                                       
+                                        <ul class="pagination justify-content-end">
+                                            <li class="page-item"><a class="page-link"
+                                                    href="{{ asset('mon-an/danh-sach/1') }}">Đầu</a>
+                                            </li>
+    
+                                            @if ($currentPage - 1 >= 1)
+                                                <li class="page-item"><a class="page-link"
+                                                        href="{{ asset('mon-an/danh-sach/' . ($currentPage - 1) ) }}">
+                                                        <i class="fas fa-angle-left"></i></a></li>
+                                            @endif
+                                            @if ($currentPage - 1 >= 1)
+                                                <li class="page-item"><a class="page-link"
+                                                        href="{{ asset('mon-an/danh-sach/' . ($currentPage - 1) ) }}">{{ $currentPage - 1 }}</a>
+                                                </li>
+                                            @endif
+                                            <li class="page-item {{ 'active' }}"><a class="page-link"
+                                                    href="{{ asset('mon-an/danh-sach/' . $currentPage) }}">{{ $currentPage }}</a>
+                                            </li>
+                                            @if ($currentPage + 1 <= $totalPage)
+                                                <li class="page-item "><a class="page-link"
+                                                        href="{{ asset('mon-an/danh-sach/' . ($currentPage + 1) ) }}">{{ $currentPage + 1 }}</a>
+                                                </li>
+                                            @endif
+                                            {{-- @endfor --}}
+                                            @if ($currentPage + 1 <= $totalPage)
+                                                <li class="page-item"><a class="page-link"
+                                                        href="{{ asset('mon-an/danh-sach/' . ($currentPage + 1) ) }}">
+                                                        <i class="fas fa-angle-right"></i></a></li>
+                                            @endif
+                                            <li class="page-item"><a class="page-link"
+                                                    href="{{ asset('mon-an/danh-sach/' . $totalPage ) }}">Cuối</a>
+                                            </li>
+                                        </ul>
+                                        {{-- ==========hết phân trang ============ --}}
+                                    </td>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th scope="col">STT</th>
-                                        <th scope="col">Tên món ăn</th>
-
-                                        <th scope="col">Thao tác</th>
-                                    </tr>
-
-                                </tfoot>
+                                
                             </table>
 
                         </div>
@@ -279,7 +277,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('dish.addParrent') }}" method="post" id="formAddDish"
+                    <form action="{{ route('dish.addDish') }}" method="post" id="formAddDish"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
@@ -301,9 +299,9 @@
                                 <div class="col-12 ">
                                     <div class="form-group">
                                         <label for="inputType">Danh mục</label>
-                                        <select name="category_parent_id">
+                                        <select name="category_parent_id" id="addCategoryParrent" class="form-control">
                                             @foreach ($categories as $index => $category)
-                                                <option value="{{$category['id']}}">{{$category['name']}}</option>
+                                                <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -311,10 +309,9 @@
                                 <div class="col-12 ">
                                     <div class="form-group">
                                         <label for="inputType">Danh mục con</label>
-                                        <select name="category_child_id">
-                                            @foreach ($children as $index => $child)
-                                                <option value="{{$child['id']}}">{{$child['name']}}</option>
-                                            @endforeach
+                                        <select name="category_child_id" class="form-control" id="addCategoryChild">
+                                            <option value="">-- Chọn danh mục món ăn --</option>
+
                                         </select>
                                     </div>
                                 </div>
@@ -383,14 +380,87 @@
                 $('.image-button').css('display', 'block');
             });
 
-            $('.formatPrice').priceFormat({
-                prefix: '',
-                centsLimit: 0,
-                thousandsSeparator: '.'
+
+        });
+
+       
+        var id = document.getElementById("categoryParrent").value;
+        var id_child = document.getElementById("id_child").value;
+
+        $.ajax({
+            url: "{{ asset('danh-muc/tim-kiem') }}",
+            type: 'GET',
+            data: {
+                id: id,
+
+            },
+            success: function(response) {
+                var child = '<option value="">Tất cả</option>';
+                for (let i = 0; i < response.length; i++) {
+                    if(response[i]['id'] == id_child){
+                        child += '<option value="' + response[i]['id'] + '" selected> ' + response[i]['name'] + '</option>';
+
+                    }
+                    else child += '<option value="' + response[i]['id'] + '"> ' + response[i]['name'] + '</option>';
+                }
+                $('#categoryChild').html(child);
+
+            },
+
+
+        });
+
+        $('#categoryParrent').change(function() {
+            var id = document.getElementById("categoryParrent").value;
+            var id_child = getParameterByName('category_child_id');
+            console.log(id_child);
+            $.ajax({
+                url: "{{ asset('danh-muc/tim-kiem') }}",
+                type: 'GET',
+                data: {
+                    id: id,
+
+                },
+                success: function(response) {
+                    var child = '<option value="">Tất cả</option>';
+                    for (let i = 0; i < response.length; i++) {
+                        child += '<option value="' + response[i]['id'] + '"> ' + response[i]['name'] +
+                            '</option>';
+                    }
+                    $('#categoryChild').html(child);
+
+                },
+
+
             });
-            // Summernote
-            $('.summernote').summernote()
-        })
+
+
+        });
+
+        $('#addCategoryParrent').change(function() {
+            var id = document.getElementById("addCategoryParrent").value;
+            $.ajax({
+                url: "{{ asset('danh-muc/tim-kiem') }}",
+                type: 'GET',
+                data: {
+                    id: id,
+
+                },
+                success: function(response) {
+                    var child = '';
+                    for (let i = 0; i < response.length; i++) {
+                        child += '<option value="' + response[i]['id'] + '"> ' + response[i]['name'] +
+                            '</option>';
+                    }
+                    $('#addCategoryChild').html(child);
+
+                },
+
+
+            });
+
+
+        });
     </script>
 
 @endsection
