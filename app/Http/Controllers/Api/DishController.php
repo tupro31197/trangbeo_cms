@@ -49,7 +49,6 @@ class DishController extends ControllerBase
 
         Session::put('category', $body);
 
-
         $data = $client->get($this->urlAPI() . '/list-dish?paginate=12&page=' . $page . '&category_parent_id=' . $category_parent_id . '&category_child_id' . $category_child_id);
         $response = json_decode($data->getBody()->getContents(), true);
         $dishes = $response['data'];
@@ -78,7 +77,7 @@ class DishController extends ControllerBase
 
         $data = $client->get($this->urlAPI() . '/detail-dish?dish_id=' . $id);
         $response = json_decode($data->getBody()->getContents(), true);
-        $detail = $response['data'];
+        $detail = $response['data']['data'];
 
         return view('includes.dish.detail', compact('detail'));
         // } catch (\Throwable $th) {
@@ -215,5 +214,118 @@ class DishController extends ControllerBase
         //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
         //     return back();
         // }
+    }
+
+    public function addDishTopping(Request $request)
+    {
+        // try{
+        $token = $request->cookie('token');
+
+        $topping = [
+            'name' => $request->name,
+            'dish_id' => $request->dish_id,
+            'limit' => $request->limit,
+        ];
+        foreach ($request['topping_name'] as $key => $value) {
+            $topping['topping'][] = [
+                'name' => $value,
+                'money' => $request['topping_price'][$key],
+            ];
+        }
+        // dd($topping);
+        $input = json_encode($topping);
+        $url = $this->urlAPI() . '/create-topping-dish';
+        $client = new Client([
+            'headers' => [
+                'token' => $token,
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+        $req = $client->post($url, ['body' => $input]);
+        // dd($req);
+
+        $response = json_decode($req->getBody()->getContents(), true);
+        // dd($response);
+        if ($response['status'] == 1) {
+            alert()->success($response['message']);
+            return redirect()->route('dish.detailDish', ['id' => $request->dish_id]);
+        } else {
+            alert()->error($response['message'], '');
+            return back();
+        }
+        // } catch (\Throwable $th) {
+        //         alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+        //         return back();
+        //     }
+    }
+
+    public function deleteTopping(Request $request, $id)
+    {
+        // try {
+        $token = $request->cookie('token');
+
+        $body = [
+            'topping_id' => $id,
+        ];
+        $input = json_encode($body);
+
+        $url = $this->urlAPI() . '/delete-topping-dish';
+        $client = new Client([
+            'headers' => [
+                'token' => $token,
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+        $req = $client->post($url, ['body' => $input]);
+        // dd($req);
+        $response = json_decode($req->getBody()->getContents(), true);
+        // dd($response);
+        if ($response['status'] == 1) {
+            alert()->success($response['message']);
+        } else {
+            alert()->warning($response['message']);
+        }
+        return back();
+        // } catch (\Throwable $th) {
+        //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+        //     return back();
+        // }
+    }
+
+    public function updateDishTopping(Request $request)
+    {
+        // try{
+        $token = $request->cookie('token');
+
+        $topping = [
+            'name' => $request->name,
+            'topping_id' => $request->topping_id,
+            'money' => $request->money,
+        ];
+        // dd($topping);
+        $input = json_encode($topping);
+        $url = $this->urlAPI() . '/update-topping-dish';
+        $client = new Client([
+            'headers' => [
+                'token' => $token,
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+        $req = $client->post($url, ['body' => $input]);
+        // dd($req);
+
+        $response = json_decode($req->getBody()->getContents(), true);
+        // dd($response);
+        if ($response['status'] == 1) {
+            alert()->success($response['message']);
+            return redirect()->route('dish.detailDish', ['id' => $request->dish_id]);
+        } else {
+            alert()->error($response['message'], '');
+            return back();
+        }
+        // } catch (\Throwable $th) {
+        //         alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+        //         return back();
+        //     }
     }
 }

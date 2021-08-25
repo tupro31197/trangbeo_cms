@@ -1,4 +1,28 @@
 
+<?php
+use GuzzleHttp\Client;
+$token = Cookie::get('token');
+// $name = Cookie::get('name');
+if (isset($token) && $token != null) {
+    $client = new Client([
+        'headers' => [
+        'token' => $token,
+        'Content-Type' => 'application/json',
+        ],
+    ]);
+
+    $data2 = $client->get(\App\Models\BaseModel::URI_API . '/get-info-payment');
+    $response2 = json_decode($data2->getBody()->getContents(), true);
+    $info = '';
+    if($response2['status']==1){
+        $info = $response2['data'];
+        
+    }
+
+
+}
+
+?>
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -10,60 +34,16 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
        
-        {{-- <li class="nav-item dropdown">
-           
-            <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="far fa-bell"></i>
-                <span class="badge badge-warning navbar-badge">{{$noty}}</span>
-              </a>
-            <!-- Dropdown - Alerts -->
-            <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right" style="overflow: scroll; max-height: 500px;">
-                @if(isset($noti) && $noti !=null)
-                @foreach ($noti['list_notify']['data'] as $item)
-                @php
-                    if ($item['is_view'] == 1) {
-                        $class = '';
-                    } else {
-                        $class = 'font-weight-bold';
-                     }
-                @endphp
-                <form action="{{ route('notify') }}" method="post" class="p-0 m-0">
-                    @csrf
-                    <button class="dropdown-item d-flex align-items-center" type="submit">
-                        <input type="hidden" value="{{ $item['id'] }}" name="notify_id" id="{{ $item['id'] }}">
-                        <div class="mr-1">
-                          
-                            <i class="fas fa-users mr-1"></i>
-                           
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">{{$item['created_at']}}</div>
-                            <p class="{{$class}}">{!!$item['content']!!}</p>
-                        </div>
-                    </button>
-                    <hr>
-                </form>
-                @endforeach
-                @endif
-                
-                <a class="dropdown-item text-center small text-gray-500" href="{{asset('thong-bao/page=1')}}">Xem thêm</a>
-            
-        </div>
-        </li> --}}
 
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
               Admin
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <a class="dropdown-item" href="">
+                <a  class="dropdown-item" href="#" data-toggle="modal" data-target="#updateModal">
                     {{-- {{ route('informationUser') }} --}}
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-700"></i>
-                    Thông tin tài khoản
-                </a>
-                <a class="dropdown-item" data-toggle="modal" data-target="#passModal" style="cursor: pointer;">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Đổi mật khẩu
+                    Thông tin chuyển khoản
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -97,7 +77,7 @@
 
 {{-- ===== Đổi mật khẩu ===== --}}
 
-<div class="modal fade" id="passModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -106,31 +86,35 @@
                 <div class="col-lg-12">
                     <div class="p-5">
                         <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Đổi mật khẩu</h1>
+                            <h1 class="h4 text-gray-900 mb-4">Thông tin chuyển khoản</h1>
                         </div>
-                        <form class="user" method="put" action="">
-                            {{-- {{ route('PassUser') }} --}}
+                        <form class="user" method="post" action="{{ route('updateInfoPayment')}}">
                             @csrf
-                            @method('PUT')
+                           
                             <div class="form-group">
-                                <label for="">mật khẩu hiện tại</label>
-                                <input type="password" class="form-control form-control-user" id=""
-                                    name="current_password" value="">
+                                <label for="">Họ tên</label>
+                                <input type="text" class="form-control form-control-user" id=""
+                                    name="name" value="{{ $info['name']}}">
                             </div>
                             <div class="form-group">
-                                <label for="">Mật khẩu mới</label>
-                                <input type="password" class="form-control form-control-user" id="" name="password"
-                                    value="">
+                                <label for="">Số tài khoản</label>
+                                <input type="text" class="form-control form-control-user" id="" name="bank_number"
+                                    value="{{ $info['bank_number']}}">
                             </div>
                             <div class="form-group">
-                                <label for="">Xác nhận mật khẩu</label>
-                                <input type="password" class="form-control form-control-user" id=""
-                                    name="password_confirmation" value="">
+                                <label for="">Tên ngân hàng</label>
+                                <input type="text" class="form-control form-control-user" id=""
+                                    name="bank_name" value="{{ $info['bank_name']}}">
+                            </div> 
+                            <div class="form-group">
+                                <label for="">Chi nhánh</label>
+                                <input type="text" class="form-control form-control-user" id=""
+                                    name="agency" value="{{ $info['agency']}}">
                             </div>
 
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-                                <button type="submit" class="btn btn-primary"><a>Chỉnh sửa</a></button>
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
                             </div>
 
 
