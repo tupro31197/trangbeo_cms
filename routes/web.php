@@ -25,6 +25,9 @@ Route::view('/dang-ki', 'includes.register');
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/trang-chu', [CategoryController::class, 'listCategory'])->name('trang-chu');
+Route::post('/cap-nhat-thong-tin-thanh-toan', [UserController::class, 'updateInfoPayment'])->name('updateInfoPayment');
+
+Route::get('/trang-chu', [CategoryController::class, 'listCategory'])->name('trang-chu');
 
 Route::prefix('danh-muc')->name('category.')->group(function () {
     Route::get('/danh-muc-cha', [CategoryController::class, 'listCategory'])->name('listCategory');
@@ -45,6 +48,11 @@ Route::prefix('mon-an')->name('dish.')->group(function () {
     Route::post('/them-moi-mon-an', [DishController::class, 'addDish'])->name('addDish');
     Route::post('/cap-nhat-mon-an', [DishController::class, 'updateDish'])->name('updateDish');
     Route::post('/xoa-mon-an/{id}', [DishController::class, 'deleteParrent'])->name('delete');
+
+    Route::post('/them-moi-topping', [DishController::class, 'addDishTopping'])->name('addDishTopping');
+    Route::post('/xoa-topping/{id}', [DishController::class, 'deleteTopping'])->name('deleteTopping');
+    Route::post('/cap-nhat-topping', [DishController::class, 'updateDishTopping'])->name('updateDishTopping');
+
 });
 
 Route::prefix('voucher')->name('voucher.')->group(function () {
