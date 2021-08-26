@@ -10,7 +10,7 @@ $currentPage = $users['current_page'];
 
     <section class="content">
 
-                <div class="container">
+                <div class="container-fluid">
                     <h2 class="text-center leader-title">Danh sách người dùng</h2>
                     <div class="card shadow mb-4">
                         <div class="card-body">

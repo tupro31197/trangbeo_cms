@@ -417,7 +417,7 @@ $currentPage = $dishes['current_page'];
 
         $('#categoryParrent').change(function() {
             var id = document.getElementById("categoryParrent").value;
-            var id_child = getParameterByName('category_child_id');
+           
             console.log(id_child);
             $.ajax({
                 url: "{{ asset('danh-muc/tim-kiem') }}",
