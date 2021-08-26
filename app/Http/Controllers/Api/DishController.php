@@ -49,7 +49,7 @@ class DishController extends ControllerBase
 
         Session::put('category', $body);
 
-        $data = $client->get($this->urlAPI() . '/list-dish?paginate=12&page=' . $page . '&category_parent_id=' . $category_parent_id . '&category_child_id' . $category_child_id);
+        $data = $client->get($this->urlAPI() . '/list-dish?paginate=12&page=' . $page . '&category_parent_id=' . $category_parent_id . '&category_child_id=' . $category_child_id);
         $response = json_decode($data->getBody()->getContents(), true);
         $dishes = $response['data'];
 
