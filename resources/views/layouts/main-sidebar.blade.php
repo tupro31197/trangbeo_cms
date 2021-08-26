@@ -82,7 +82,7 @@ if (isset($token) && $token != null) {
                   
                 </li>
                 <li class="nav-item">
-                    <a href="{{ asset('don-hang/danh-sach/1')}}" class="nav-link">
+                    <a href="" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Đơn hàng

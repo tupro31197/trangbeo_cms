@@ -37,7 +37,7 @@ class CategoryController extends ControllerBase
 
     public function addParrent(Request $request)
     {
-        // try{
+        try{
         $token = $request->cookie('token');
 
         $category = [];
@@ -66,12 +66,10 @@ class CategoryController extends ControllerBase
             [
                 'multipart' => $category,
             ],
-            // ['form_params']
         );
-        // dd($req);
 
         $response = json_decode($req->getBody()->getContents(), true);
-        // dd($response);
+        
         if ($response['status'] == 1) {
             alert()->success($response['message']);
             return redirect()->route('category.listCategory');
@@ -79,15 +77,15 @@ class CategoryController extends ControllerBase
             alert()->error($response['message'], '');
             return back();
         }
-        // } catch (\Throwable $th) {
-        //         alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //         return back();
-        //     }
+        } catch (\Throwable $th) {
+                alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+                return back();
+            }
     }
 
     public function updateParrent(Request $request)
     {
-        // try{
+        try{
         $token = $request->cookie('token');
 
         $category = [];
@@ -116,12 +114,11 @@ class CategoryController extends ControllerBase
             [
                 'multipart' => $category,
             ],
-            // ['form_params']
+            
         );
-        // dd($req);
-
+    
         $response = json_decode($req->getBody()->getContents(), true);
-        // dd($response);
+        
         if ($response['status'] == 1) {
             alert()->success($response['message']);
             return redirect()->route('category.listCategory');
@@ -129,15 +126,15 @@ class CategoryController extends ControllerBase
             alert()->error($response['message'], '');
             return back();
         }
-        // } catch (\Throwable $th) {
-        //         alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //         return back();
-        //     }
+        } catch (\Throwable $th) {
+                alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+                return back();
+            }
     }
 
     public function deleteParrent(Request $request, $id)
     {
-        // try {
+        try {
         $token = $request->cookie('token');
 
         $body = [
@@ -153,7 +150,7 @@ class CategoryController extends ControllerBase
             ],
         ]);
         $req = $client->post($url, ['body' => $input]);
-        // dd($req);
+    
         $response = json_decode($req->getBody()->getContents(), true);
         if ($response['status'] == 1) {
             alert()->success($response['message']);
@@ -161,15 +158,15 @@ class CategoryController extends ControllerBase
             alert()->warning($response['message']);
         }
         return back();
-        // } catch (\Throwable $th) {
-        //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //     return back();
-        // }
+        } catch (\Throwable $th) {
+            alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
     }
 
     public function addChild(Request $request)
     {
-        // try{
+        try{
         $token = $request->cookie('token');
 
         $category = [];
@@ -198,27 +195,25 @@ class CategoryController extends ControllerBase
             [
                 'multipart' => $category,
             ],
-            // ['form_params']
         );
-        // dd($req);
-
+        
         $response = json_decode($req->getBody()->getContents(), true);
-        // dd($response);
+        
         if ($response['status'] == 1) {
             alert()->success($response['message']);
         } else {
             alert()->error($response['message'], '');
         }
         return back();
-        // } catch (\Throwable $th) {
-        //         alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //         return back();
-        //     }
+        } catch (\Throwable $th) {
+                alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+                return back();
+            }
     }
 
     public function listChild(Request $request, $id)
     {
-        // try {
+        try {
         $token = $request->cookie('token');
 
         $client = new Client([
@@ -236,10 +231,10 @@ class CategoryController extends ControllerBase
             return back();
         }
         return view('includes.category.child', compact('id', 'child'));
-        // } catch (\Throwable $th) {
-        //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //     return back();
-        // }
+        } catch (\Throwable $th) {
+            alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
     }
 
     public function deleteChild(Request $request, $id)
@@ -260,7 +255,7 @@ class CategoryController extends ControllerBase
                 ],
             ]);
             $req = $client->post($url, ['body' => $input]);
-            // dd($req);
+            
             $response = json_decode($req->getBody()->getContents(), true);
 
             if ($response['status'] == 1) {
@@ -306,12 +301,12 @@ class CategoryController extends ControllerBase
                 [
                     'multipart' => $category,
                 ],
-                // ['form_params']
+               
             );
-            // dd($req);
+           
 
             $response = json_decode($req->getBody()->getContents(), true);
-            // dd($response);
+           
             if ($response['status'] == 1) {
                 alert()->success($response['message']);
             } else {
@@ -326,7 +321,7 @@ class CategoryController extends ControllerBase
 
     public function listChildFromParrent(Request $request)
     {
-        // try {
+        try {
         $token = $request->cookie('token');
 
         $client = new Client([
@@ -338,10 +333,15 @@ class CategoryController extends ControllerBase
         $data = $client->get($this->urlAPI() . '/list-category-child?category_parent_id=' . $id);
         $response = json_decode($data->getBody()->getContents(), true);
         $child = $response['data'];
+
+        if ($response['status'] == 0) {
+            alert()->warning($response['message']);
+            return 0;
+        }
         return $child;
-        // } catch (\Throwable $th) {
-        //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //     return back();
-        // }
+        } catch (\Throwable $th) {
+            alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
     }
 }
