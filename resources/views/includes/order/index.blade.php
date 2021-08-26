@@ -23,7 +23,22 @@ $currentPage = $orders['current_page'];
                                     <div class="col-12 col-md-2">
                                         <label>Mã đơn hàng</label>
                                         <div class="input-group">
-                                            <input type="text" name="order_code" id="orderCode" placeholder="Mã đơn hàng">
+                                            <input type="text" name="order_code" id="orderCode" value="{{$order_code}}" class="form-control" placeholder="Mã đơn hàng">
+                                        </div>
+                                        <!-- input-group -->
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <label>Thanh toán</label>
+                                        <div class="input-group">
+                                            <select name="type_payment" id="" class="form-control">
+                                                <option value="0">Tất cả</option>
+                                                <option value="1" @if ($type_payment == 1)
+                                                    {{ "selected"}}
+                                                @endif>Tiền mặt</option>
+                                                <option value="2" @if ($type_payment == 2)
+                                                    {{ "selected"}}
+                                                @endif>Chuyển khoản</option>
+                                            </select>
                                         </div>
                                         <!-- input-group -->
                                     </div>
@@ -52,7 +67,9 @@ $currentPage = $orders['current_page'];
                                 <th>Phí ship</th>
                                 <th>Địa chỉ</th>
                                 <th>Ngày đặt</th>
+                                <th>Thanh toán</th>
                                 <th>Trạng thái</th>
+                               
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
@@ -75,6 +92,9 @@ $currentPage = $orders['current_page'];
                                     } elseif ($item['status'] == 5) {
                                         $statusOrder = 'Đã hoàn thành';
                                     }
+                                    $payment = '';
+                                    if($item['type_payment'] == 0)  $payment = 'Tiền mặt';
+                                    else if($item['type_payment'] == 1) $payment = 'Chuyển khoản';
                                 @endphp
                                 <tr>
                                     <td>{{ ++$key }}</td>
@@ -91,8 +111,9 @@ $currentPage = $orders['current_page'];
                                     </td>
 
                                     <td>{{ $date }} </td>
-
+                                    <td>{{ $payment}}</td>
                                     <td>{{ $statusOrder }}</td>
+                                   
                                     <td class="text-center">
 
                                         <a href="" data-toggle="modal" data-target="#detail{{ $item['order_code'] }}"
@@ -180,9 +201,20 @@ $currentPage = $orders['current_page'];
                                                             @else {{"Có"}}
                                                             
                                                         @endif</span>
-                                                        
+                                                       
                                                     </div>
-                                                 
+                                                    @if (isset($item['image_payment']) && $item['image_payment'] != null)
+                                                    <div class="row p-2">
+                                                    <b class="col-3">Ảnh thanh toán:</b>
+                                                    @foreach ($item['image_payment'] as $image)
+                                                <div>
+                                                    <a href="{{ $image['image']}}" data-lightbox="photos">
+                                                    <img src="{{$image['image']}}" alt="" class="p-2" style="max-width: 100px; max-height: 100px;">
+                                                    </a>
+                                                </div>
+                                                    @endforeach
+                                                    @endif
+                                                </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <a class="btn btn-secondary" 

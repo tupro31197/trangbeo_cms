@@ -35,6 +35,10 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="{{ asset('template/AdminLTE/dist/css/adminlte.min.css') }}">
 
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/css/lightbox.min.css">
+
+
 <style>
     .image_hover {
         transition: all 0.7s ease;

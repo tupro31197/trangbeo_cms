@@ -7,12 +7,13 @@ use App\Helpers\Helpers;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 
 class OrderController extends ControllerBase
 {
     public function listOrder(Request $request, $page, $status)
     {
-        try {
+        // try {
             $token = $request->cookie('token');
 
             $client = new Client([
@@ -20,11 +21,34 @@ class OrderController extends ControllerBase
                     'token' => $token,
                 ],
             ]);
-            $url = $this->urlAPI() . '/list-order?page=' . $page . '&status=' . $status;
+            $body = Session::get('order');
 
-            if ($request->order_code) {
-                $url = $url . '&search=' . $request->order_code;
+            if (isset($request->order_code)) {
+                $order_code = $request->order_code;
+            } elseif (isset($body['order_code']) && isset($body['page']) && $page != $body['page']) {
+                $order_code = $body['order_code'];
+            } else {
+                $order_code = '';
             }
+
+            if (isset($request->type_payment)) {
+                $type_payment = $request->type_payment;
+            } elseif (isset($body['type_payment']) && isset($body['page']) && $page != $body['page']) {
+                $type_payment = $body['type_payment'];
+            } else {
+                $type_payment = '';
+            }
+
+            $body = [
+                'order_code' => $order_code,
+                'type_payment' => $type_payment,
+                'page' => $page,
+            ];
+
+            Session::put('order', $body);
+
+            $url = $this->urlAPI() . '/list-order?page=' . $page . '&status=' . $status . '&search=' . $order_code . '&type_payment=' . $type_payment;
+
             $data = $client->get($url);
 
             $response = json_decode($data->getBody()->getContents(), true);
@@ -33,11 +57,11 @@ class OrderController extends ControllerBase
                 alert()->warning($response['message']);
                 return back();
             }
-            return view('includes.order.index', compact('orders', 'status'));
-        } catch (\Throwable $th) {
-            alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-            return back();
-        }
+            return view('includes.order.index', compact('orders', 'status', 'type_payment', 'order_code'));
+        // } catch (\Throwable $th) {
+        //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+        //     return back();
+        // }
     }
 
     public function updateOrder(Request $request, $code)
