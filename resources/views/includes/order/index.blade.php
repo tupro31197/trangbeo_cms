@@ -14,6 +14,29 @@ $currentPage = $orders['current_page'];
 
         <div class="container">
             <h1 class="text-center leader-title">Danh sách đơn hàng</h1>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="{{ asset('don-hang/danh-sach/1/trang-thai=' . $status) }}" method="GET" id="formSearchData">
+                                <div class="row d-flex align-items-end">
+                                    <div class="col-12 col-md-2">
+                                        <label>Mã đơn hàng</label>
+                                        <div class="input-group">
+                                            <input type="text" name="order_code" id="orderCode" placeholder="Mã đơn hàng">
+                                        </div>
+                                        <!-- input-group -->
+                                    </div>
+
+                                    <button class="btn btn-primary float-right ml-auto"
+                                        style="height: 40px; float:right">Tìm kiếm</button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
           <div class="card shadow">
             <div class="card-body">
                 <div class="table-responsive">
