@@ -12,7 +12,7 @@ $currentPage = $orders['current_page'];
 
 
 
-        <div class="container">
+        <div class="container-fluid">
             <h1 class="text-center leader-title">Danh sách đơn hàng</h1>
             <div class="row">
                 <div class="col-12">
