@@ -81,12 +81,14 @@ class OrderController extends ControllerBase
             ]);
             $status = $request->status;
             $url = '';
-            if ($status == 5) {
-                $url = $this->urlAPI() . '/store-comming-order';
-            } elseif ($status == 3) {
+            if ($status == 9) {
+                $url = $this->urlAPI() . '/store-confirm-order';
+            } elseif ($status == 5) {
                 $url = $this->urlAPI() . '/finish-order';
-            } elseif ($status == 4) {
+            } elseif ($status == 8) {
                 $url = $this->urlAPI() . '/cancel-order';
+            } elseif ($status == 4) {
+                $url = $this->urlAPI() . '/store-comming-order';
             }
             $req = $client->post($url, ['body' => $input]);
             $response = json_decode($req->getBody()->getContents(), true);
