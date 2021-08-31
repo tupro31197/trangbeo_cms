@@ -13,10 +13,12 @@ if (isset($token) && $token != null) {
 
     $data2 = $client->get(\App\Models\BaseModel::URI_API . '/get-info-payment');
     $response2 = json_decode($data2->getBody()->getContents(), true);
-    $info = '';
-    if($response2['status']==1){
+    $info['name'] = '';
+    $info['bank_number'] = '';
+    $info['bank_name'] = '';
+    $info['agency'] = '';
+    if($response2['status'] == 1 && $response2['data']){
         $info = $response2['data'];
-        
     }
 
 
@@ -75,7 +77,7 @@ if (isset($token) && $token != null) {
     </div>
 </div>
 
-{{-- ===== Đổi mật khẩu =====
+{{-- ===== Đổi mật khẩu ===== --}}
 
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -94,7 +96,7 @@ if (isset($token) && $token != null) {
                             <div class="form-group">
                                 <label for="">Họ tên</label>
                                 <input type="text" class="form-control form-control-user" id=""
-                                    name="name" value="{{ $info['name']}}"
+                                    name="name" value="{{ $info['name'] }}"  
                                     >
                             </div>
                             <div class="form-group">
@@ -128,4 +130,4 @@ if (isset($token) && $token != null) {
 
 
     </div>
-</div> --}}
+</div>
