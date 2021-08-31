@@ -75,7 +75,7 @@ if (isset($token) && $token != null) {
     </div>
 </div>
 
-{{-- ===== Đổi mật khẩu ===== --}}
+{{-- ===== Đổi mật khẩu =====
 
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -94,12 +94,14 @@ if (isset($token) && $token != null) {
                             <div class="form-group">
                                 <label for="">Họ tên</label>
                                 <input type="text" class="form-control form-control-user" id=""
-                                    name="name" value="{{ $info['name']}}">
+                                    name="name" value="{{ $info['name']}}"
+                                    >
                             </div>
                             <div class="form-group">
                                 <label for="">Số tài khoản</label>
                                 <input type="text" class="form-control form-control-user" id="" name="bank_number"
-                                    value="{{ $info['bank_number']}}">
+                                    value="{{ $info['bank_number']}}"
+                                    >
                             </div>
                             <div class="form-group">
                                 <label for="">Tên ngân hàng</label>
@@ -126,4 +128,4 @@ if (isset($token) && $token != null) {
 
 
     </div>
-</div>
+</div> --}}

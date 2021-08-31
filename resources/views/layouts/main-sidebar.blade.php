@@ -99,11 +99,17 @@ if (isset($token) && $token != null) {
                         <li class="nav-item">
                             <a href="{{ asset('don-hang/danh-sach/1/trang-thai=1')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Đã đặt đơn</p>
+                                <p>Chờ xác nhận</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ asset('don-hang/danh-sach/1/trang-thai=2')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Đã xác nhận</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ asset('don-hang/danh-sach/1/trang-thai=5')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Đang giao</p>
                             </a>
