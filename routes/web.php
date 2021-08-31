@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::view('/', 'welcome')->name('dang-nhap');
+Route::get('/', [UserController::class, 'checkToken'])->name('dang-nhap');
 Route::view('/dang-ki', 'includes.register');
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');

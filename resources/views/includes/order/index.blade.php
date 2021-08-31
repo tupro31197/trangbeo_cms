@@ -168,6 +168,7 @@ $currentPage = $orders['current_page'];
                                                         <select name="status" id="" class="form-control col-3">
                                                             <option value="0" @if ($item['status'] == 0){{"selected"}}@endif>Chưa đặt đơn</option>
                                                             <option value="1" @if ($item['status'] == 1){{"selected"}}@endif>Đã đặt đơn</option>
+                                                            <option value="9" @if ($item['status'] == 9){{"selected"}}@endif>Đã xác nhận</option>
                                                             <option value="4" @if ($item['status'] == 4){{"selected"}}@endif>Đang giao</option>
                                                             <option value="5" @if ($item['status'] == 5){{"selected"}}@endif>Đã hoàn thành</option>
                                                             <option value="8" @if ($item['status'] == 8){{"selected"}}@endif>Đã huỷ đơn</option>
@@ -215,13 +216,13 @@ $currentPage = $orders['current_page'];
                                                     @endforeach
                                                     @endif
                                                 </div>
-                                                </div>
                                                 <div class="modal-footer">
                                                     <a class="btn btn-secondary" 
                                                         data-dismiss="modal">Đóng</a>
                                                         <button type="submit" class="btn btn-primary">Lưu</a>
-
                                                 </div>
+                                                </div>
+                                                
                                             </form>
                                             </div>
                                         </div>

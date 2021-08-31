@@ -23,6 +23,10 @@ class VoucherController extends ControllerBase
 
             $data = $client->get($this->urlAPI() . '/history-voucher?page='.$page);
             $response = json_decode($data->getBody()->getContents(), true);
+            if ($response['status'] == 0) {
+                alert()->warning($response['message']);
+                return back();
+            }
             $vouchers = $response['data'];
 
             return view('includes.voucher.index', compact('vouchers'));
@@ -34,7 +38,7 @@ class VoucherController extends ControllerBase
 
     public function addVoucher(Request $request)
     {
-        // try {
+        try {
             $token = $request->cookie('token');
 
             $body = [
@@ -63,15 +67,15 @@ class VoucherController extends ControllerBase
                 ->getTargetUrl();
 
             return redirect($url);
-        // } catch (\Throwable $th) {
-        //     alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //     return back();
-        // }
+        } catch (\Throwable $th) {
+            alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
     }
 
     public function updateVoucher(Request $request, $id)
     {
-        // try {
+        try {
             $token = $request->cookie('token');
 
             $body = [
@@ -100,15 +104,15 @@ class VoucherController extends ControllerBase
                 ->getTargetUrl();
 
             return redirect($url);
-        // } catch (\Throwable $th) {
-        //     alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //     return back();
-        // }
+        } catch (\Throwable $th) {
+            alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
     }
 
     public function deleteParrent(Request $request, $id)
     {
-        // try {
+        try {
         $token = $request->cookie('token');
 
         $body = [
@@ -124,7 +128,7 @@ class VoucherController extends ControllerBase
             ],
         ]);
         $req = $client->post($url, ['body' => $input]);
-        // dd($req);
+        
         $response = json_decode($req->getBody()->getContents(), true);
 
         if ($response['status'] == 1) {
@@ -133,10 +137,10 @@ class VoucherController extends ControllerBase
             alert()->warning($response['message']);
         }
         return back();
-        // } catch (\Throwable $th) {
-        //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //     return back();
-        // }
+        } catch (\Throwable $th) {
+            alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
     }
 
 }
