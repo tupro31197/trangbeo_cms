@@ -169,7 +169,7 @@ $currentPage = $orders['current_page'];
                                                         @else
                                                         <select name="status" id="" class="form-control col-3">
                                                             @if($item['status'] == 1)
-                                                            <option value="1" @if ($item['status'] == 1){{"selected"}}@endif>KH đã đặt đơn</option>
+                                                            <option value="1" @if ($item['status'] == 1){{"selected"}}@endif>Đã đặt đơn</option>
                                                            @endif
                     
                                                             @if(in_array($item['status'], [1,9]))
