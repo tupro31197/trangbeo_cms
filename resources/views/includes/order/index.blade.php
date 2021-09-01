@@ -91,6 +91,8 @@ $currentPage = $orders['current_page'];
                                         $statusOrder = 'Đơn đang giao';
                                     } elseif ($item['status'] == 5) {
                                         $statusOrder = 'Đã hoàn thành';
+                                    }elseif($item['status'] == 9){
+                                        $statusOrder = 'Đã xác nhận';
                                     }
                                     $payment = '';
                                     if($item['type_payment'] == 0)  $payment = 'Tiền mặt';
@@ -166,12 +168,23 @@ $currentPage = $orders['current_page'];
                                                         @if($item['status'] == 0 ) <span class="col-3">{{ $status}}</span>
                                                         @else
                                                         <select name="status" id="" class="form-control col-3">
-                                                            <option value="0" @if ($item['status'] == 0){{"selected"}}@endif>Chưa đặt đơn</option>
-                                                            <option value="1" @if ($item['status'] == 1){{"selected"}}@endif>Đã đặt đơn</option>
+                                                            @if($item['status'] == 1)
+                                                            <option value="1" @if ($item['status'] == 1){{"selected"}}@endif>KH đã đặt đơn</option>
+                                                           @endif
+                    
+                                                            @if(in_array($item['status'], [1,9]))
                                                             <option value="9" @if ($item['status'] == 9){{"selected"}}@endif>Đã xác nhận</option>
+                                                            @endif
+                                                            @if(in_array($item['status'], [4,9]))
                                                             <option value="4" @if ($item['status'] == 4){{"selected"}}@endif>Đang giao</option>
+                                                            @endif
+                                                            @if(in_array($item['status'], [4,5]))
                                                             <option value="5" @if ($item['status'] == 5){{"selected"}}@endif>Đã hoàn thành</option>
+                                                            @endif
+                                                            @if(in_array($item['status'], [1,8,9,4]))
                                                             <option value="8" @if ($item['status'] == 8){{"selected"}}@endif>Đã huỷ đơn</option>
+                                                            @endif
+                                                         
 
                                                         </select>
                                                         @endif
