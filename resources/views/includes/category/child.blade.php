@@ -50,6 +50,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>STT</th>
+                                        <th class="text-center">Ảnh</th>
                                         <th>Tên danh mục món ăn</th>
 
                                         <th>Thao tác</th>
@@ -61,6 +62,8 @@
                                         <tr>
 
                                             <th scope="row" style="vertical-align: middle ">{{ ++$index }}</th>
+                                            <td class="text-center"><img src="{{ $category['image']}}" alt="" style="max-width: 200px; max-width: 200px; object-fit:cover"></td>
+
                                             <td style="vertical-align: middle ">{{ $category['name'] }}</td>
 
                                             <td style="vertical-align: middle ">
