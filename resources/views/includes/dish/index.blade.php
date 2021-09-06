@@ -305,6 +305,7 @@ $currentPage = $dishes['current_page'];
                                     <div class="form-group">
                                         <label for="inputType">Danh mục</label>
                                         <select name="category_parent_id" id="addCategoryParrent" class="form-control">
+                                            <option value="">-- Chọn danh mục cha --</option>
                                             @foreach ($categories as $index => $category)
                                                 <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                                             @endforeach
