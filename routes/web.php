@@ -69,6 +69,8 @@ Route::prefix('don-hang')->name('order.')->group(function () {
     Route::post('/cap-nhat/{code}', [OrderController::class, 'updateOrder'])->name('updateOrder');
     Route::post('/cap-nhat-danh-muc-cha', [CategoryController::class, 'updateParrent'])->name('updateParrent');
     Route::post('/xoa-danh-muc-cha/{id}', [CategoryController::class, 'deleteParrent'])->name('delete');
+    Route::get('/in-hoa-don/{code}', [OrderController::class, 'print'])->name('print');
+
 });
 
 Route::prefix('danh-gia')->name('rate.')->group(function () {
