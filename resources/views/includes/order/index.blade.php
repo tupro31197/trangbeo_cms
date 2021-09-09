@@ -76,7 +76,7 @@ $currentPage = $orders['current_page'];
                         <tbody>
                             
                             @foreach ($orders['data'] as $key => $item)
-
+                            {{dd($item)}}
                                 @php
                 
                                     $date = date(' d-m-Y', strtotime($item['createdAt']));
@@ -121,6 +121,10 @@ $currentPage = $orders['current_page'];
                                         <a href="" data-toggle="modal" data-target="#detail{{ $item['order_code'] }}"
                                             class="btn btn-info btn-circle btn-sm ">
                                             <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a href="{{ route('order.print', ['code' => $item['order_code']])}}"
+                                            class="btn btn-info btn-circle btn-sm mt-1">
+                                            <i class="fas fa-print"></i>
                                         </a>
                                        
                                     </td>
