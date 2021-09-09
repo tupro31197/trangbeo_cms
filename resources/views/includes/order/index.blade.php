@@ -76,7 +76,7 @@ $currentPage = $orders['current_page'];
                         <tbody>
                             
                             @foreach ($orders['data'] as $key => $item)
-                            {{dd($item)}}
+                          
                                 @php
                 
                                     $date = date(' d-m-Y', strtotime($item['createdAt']));
