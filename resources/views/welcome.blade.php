@@ -42,7 +42,7 @@
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
                                                 id="phone" name="phone" aria-describedby="emailHelp"
-                                                placeholder="Nhập số điện thoại" value="0975972543">
+                                                placeholder="Nhập số điện thoại" value="">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"

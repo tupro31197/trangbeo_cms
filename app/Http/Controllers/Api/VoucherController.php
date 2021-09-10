@@ -14,22 +14,25 @@ class VoucherController extends ControllerBase
     {
         try {
             $token = $request->cookie('token');
+            if ($token != null && $token != '') {
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                    ],
+                ]);
 
-            $client = new Client([
-                'headers' => [
-                    'token' => $token,
-                ],
-            ]);
+                $data = $client->get($this->urlAPI() . '/history-voucher?page=' . $page);
+                $response = json_decode($data->getBody()->getContents(), true);
+                if ($response['status'] == 0) {
+                    alert()->warning($response['message']);
+                    return back();
+                }
+                $vouchers = $response['data'];
 
-            $data = $client->get($this->urlAPI() . '/history-voucher?page='.$page);
-            $response = json_decode($data->getBody()->getContents(), true);
-            if ($response['status'] == 0) {
-                alert()->warning($response['message']);
-                return back();
+                return view('includes.voucher.index', compact('vouchers'));
+            } else {
+                return view('welcome');
             }
-            $vouchers = $response['data'];
-
-            return view('includes.voucher.index', compact('vouchers'));
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
@@ -40,33 +43,36 @@ class VoucherController extends ControllerBase
     {
         try {
             $token = $request->cookie('token');
+            if ($token != null && $token != '') {
+                $body = [
+                    'percent' => $request->percent,
+                ];
+                $input = json_encode($body);
+                $client = new Client([
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'token' => $token,
+                    ],
+                ]);
 
-            $body = [
-                'percent' => $request->percent,
-            ];
-            $input = json_encode($body);
-            $client = new Client([
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'token' => $token,
-                ],
-            ]);
-           
-         $url = $this->urlAPI() . '/create-voucher';
-          
-            $req = $client->post($url, ['body' => $input]);
-            $response = json_decode($req->getBody()->getContents(), true);
-          
-            if ($response['status'] == 0) {
-                alert()->warning($response['message']);
-                return back();
+                $url = $this->urlAPI() . '/create-voucher';
+
+                $req = $client->post($url, ['body' => $input]);
+                $response = json_decode($req->getBody()->getContents(), true);
+
+                if ($response['status'] == 0) {
+                    alert()->warning($response['message']);
+                    return back();
+                }
+                alert()->success($response['message']);
+                $url = redirect()
+                    ->route('voucher.listVoucher', ['page' => 1])
+                    ->getTargetUrl();
+
+                return redirect($url);
+            } else {
+                return view('welcome');
             }
-            alert()->success($response['message']);
-            $url = redirect()
-                ->route('voucher.listVoucher', ['page' => 1])
-                ->getTargetUrl();
-
-            return redirect($url);
         } catch (\Throwable $th) {
             alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
@@ -77,33 +83,36 @@ class VoucherController extends ControllerBase
     {
         try {
             $token = $request->cookie('token');
+            if ($token != null && $token != '') {
+                $body = [
+                    'voucher_id' => $id,
+                ];
+                $input = json_encode($body);
+                $client = new Client([
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'token' => $token,
+                    ],
+                ]);
 
-            $body = [
-                'voucher_id' => $id,
-            ];
-            $input = json_encode($body);
-            $client = new Client([
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'token' => $token,
-                ],
-            ]);
-           
-         $url = $this->urlAPI() . '/update-voucher';
-          
-            $req = $client->post($url, ['body' => $input]);
-            $response = json_decode($req->getBody()->getContents(), true);
-          
-            if ($response['status'] == 0) {
-                alert()->warning($response['message']);
-                return back();
+                $url = $this->urlAPI() . '/update-voucher';
+
+                $req = $client->post($url, ['body' => $input]);
+                $response = json_decode($req->getBody()->getContents(), true);
+
+                if ($response['status'] == 0) {
+                    alert()->warning($response['message']);
+                    return back();
+                }
+                alert()->success($response['message']);
+                $url = redirect()
+                    ->route('voucher.listVoucher', ['page' => 1])
+                    ->getTargetUrl();
+
+                return redirect($url);
+            } else {
+                return view('welcome');
             }
-            alert()->success($response['message']);
-            $url = redirect()
-                ->route('voucher.listVoucher', ['page' => 1])
-                ->getTargetUrl();
-
-            return redirect($url);
         } catch (\Throwable $th) {
             alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
@@ -113,34 +122,36 @@ class VoucherController extends ControllerBase
     public function deleteParrent(Request $request, $id)
     {
         try {
-        $token = $request->cookie('token');
+            $token = $request->cookie('token');
+            if ($token != null && $token != '') {
+                $body = [
+                    'id' => $id,
+                ];
+                $input = json_encode($body);
 
-        $body = [
-            'id' => $id,
-        ];
-        $input = json_encode($body);
+                $url = $this->urlAPI() . '/delete-category-parent';
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                        'Content-Type' => 'application/json',
+                    ],
+                ]);
+                $req = $client->post($url, ['body' => $input]);
 
-        $url = $this->urlAPI() . '/delete-category-parent';
-        $client = new Client([
-            'headers' => [
-                'token' => $token,
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-        $req = $client->post($url, ['body' => $input]);
-        
-        $response = json_decode($req->getBody()->getContents(), true);
+                $response = json_decode($req->getBody()->getContents(), true);
 
-        if ($response['status'] == 1) {
-            alert()->success($response['message']);
-        } else {
-            alert()->warning($response['message']);
-        }
-        return back();
+                if ($response['status'] == 1) {
+                    alert()->success($response['message']);
+                } else {
+                    alert()->warning($response['message']);
+                }
+                return back();
+            } else {
+                return view('welcome');
+            }
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
         }
     }
-
 }

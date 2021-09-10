@@ -14,21 +14,24 @@ class CategoryController extends ControllerBase
     {
         try {
             $token = $request->cookie('token');
+           if ($token != null && $token != '') {
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                    ],
+                ]);
 
-            $client = new Client([
-                'headers' => [
-                    'token' => $token,
-                ],
-            ]);
-
-            $data = $client->get($this->urlAPI() . '/list-category');
-            $response = json_decode($data->getBody()->getContents(), true);
-            $categories = $response['data'];
-            if ($response['status'] == 0) {
-                alert()->warning($response['message']);
-                return back();
+                $data = $client->get($this->urlAPI() . '/list-category');
+                $response = json_decode($data->getBody()->getContents(), true);
+                $categories = $response['data'];
+                if ($response['status'] == 0) {
+                    alert()->warning($response['message']);
+                    return back();
+                }
+                return view('includes.category.index', compact('categories'));
+            } else {
+                return view('welcome');
             }
-            return view('includes.category.index', compact('categories'));
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
@@ -37,127 +40,129 @@ class CategoryController extends ControllerBase
 
     public function addParrent(Request $request)
     {
-        try{
-        $token = $request->cookie('token');
+        try {
+            $token = $request->cookie('token');
+           if ($token != null && $token != '') {
+                $category = [];
+                foreach ($request->except('_token') as $key => $value) {
+                    if ($key == 'sampleFile') {
+                        if ($request->hasFile('sampleFile')) {
+                            $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
+                        }
+                    } else {
+                        $category[] = [
+                            'name' => $key,
+                            'contents' => $value,
+                        ];
+                    }
+                }
 
-        $category = [];
-        foreach ($request->except('_token') as $key => $value) {
-            if ($key == 'sampleFile') {
-                if ($request->hasFile('sampleFile')) {
-                    $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
+                $url = $this->urlAPI() . '/create-category-parent';
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                        'Content-Type' => 'multipart/form-data',
+                    ],
+                ]);
+                $req = $client->post($url, [
+                    'multipart' => $category,
+                ]);
+
+                $response = json_decode($req->getBody()->getContents(), true);
+
+                if ($response['status'] == 1) {
+                    alert()->success($response['message']);
+                    return redirect()->route('category.listCategory');
+                } else {
+                    alert()->error($response['message'], '');
+                    return back();
                 }
             } else {
-                $category[] = [
-                    'name' => $key,
-                    'contents' => $value,
-                ];
+                return view('welcome');
             }
-        }
-
-        $url = $this->urlAPI() . '/create-category-parent';
-        $client = new Client([
-            'headers' => [
-                'token' => $token,
-                'Content-Type' => 'multipart/form-data',
-            ],
-        ]);
-        $req = $client->post(
-            $url,
-            [
-                'multipart' => $category,
-            ],
-        );
-
-        $response = json_decode($req->getBody()->getContents(), true);
-        
-        if ($response['status'] == 1) {
-            alert()->success($response['message']);
-            return redirect()->route('category.listCategory');
-        } else {
-            alert()->error($response['message'], '');
+        } catch (\Throwable $th) {
+            alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
         }
-        } catch (\Throwable $th) {
-                alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-                return back();
-            }
     }
 
     public function updateParrent(Request $request)
     {
-        try{
-        $token = $request->cookie('token');
+        try {
+            $token = $request->cookie('token');
+           if ($token != null && $token != '') {
+                $category = [];
+                foreach ($request->except('_token') as $key => $value) {
+                    if ($key == 'sampleFile') {
+                        if ($request->hasFile('sampleFile')) {
+                            $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
+                        }
+                    } else {
+                        $category[] = [
+                            'name' => $key,
+                            'contents' => $value,
+                        ];
+                    }
+                }
 
-        $category = [];
-        foreach ($request->except('_token') as $key => $value) {
-            if ($key == 'sampleFile') {
-                if ($request->hasFile('sampleFile')) {
-                    $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
+                $url = $this->urlAPI() . '/update-category-parent';
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                        'Content-Type' => 'multipart/form-data',
+                    ],
+                ]);
+                $req = $client->post($url, [
+                    'multipart' => $category,
+                ]);
+
+                $response = json_decode($req->getBody()->getContents(), true);
+
+                if ($response['status'] == 1) {
+                    alert()->success($response['message']);
+                    return redirect()->route('category.listCategory');
+                } else {
+                    alert()->error($response['message'], '');
+                    return back();
                 }
             } else {
-                $category[] = [
-                    'name' => $key,
-                    'contents' => $value,
-                ];
+                return view('welcome');
             }
-        }
-
-        $url = $this->urlAPI() . '/update-category-parent';
-        $client = new Client([
-            'headers' => [
-                'token' => $token,
-                'Content-Type' => 'multipart/form-data',
-            ],
-        ]);
-        $req = $client->post(
-            $url,
-            [
-                'multipart' => $category,
-            ],
-            
-        );
-    
-        $response = json_decode($req->getBody()->getContents(), true);
-        
-        if ($response['status'] == 1) {
-            alert()->success($response['message']);
-            return redirect()->route('category.listCategory');
-        } else {
-            alert()->error($response['message'], '');
+        } catch (\Throwable $th) {
+            alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
         }
-        } catch (\Throwable $th) {
-                alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-                return back();
-            }
     }
 
     public function deleteParrent(Request $request, $id)
     {
         try {
-        $token = $request->cookie('token');
+            $token = $request->cookie('token');
+           if ($token != null && $token != '') {
+                $body = [
+                    'id' => $id,
+                ];
+                $input = json_encode($body);
 
-        $body = [
-            'id' => $id,
-        ];
-        $input = json_encode($body);
+                $url = $this->urlAPI() . '/delete-category-parent';
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                        'Content-Type' => 'application/json',
+                    ],
+                ]);
+                $req = $client->post($url, ['body' => $input]);
 
-        $url = $this->urlAPI() . '/delete-category-parent';
-        $client = new Client([
-            'headers' => [
-                'token' => $token,
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-        $req = $client->post($url, ['body' => $input]);
-    
-        $response = json_decode($req->getBody()->getContents(), true);
-        if ($response['status'] == 1) {
-            alert()->success($response['message']);
-        } else {
-            alert()->warning($response['message']);
-        }
-        return back();
+                $response = json_decode($req->getBody()->getContents(), true);
+                if ($response['status'] == 1) {
+                    alert()->success($response['message']);
+                } else {
+                    alert()->warning($response['message']);
+                }
+                return back();
+            } else {
+                return view('welcome');
+            }
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
@@ -166,71 +171,74 @@ class CategoryController extends ControllerBase
 
     public function addChild(Request $request)
     {
-        try{
-        $token = $request->cookie('token');
-
-        $category = [];
-        foreach ($request->except('_token') as $key => $value) {
-            if ($key == 'sampleFile') {
-                if ($request->hasFile('sampleFile')) {
-                    $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
+        try {
+            $token = $request->cookie('token');
+           if ($token != null && $token != '') {
+                $category = [];
+                foreach ($request->except('_token') as $key => $value) {
+                    if ($key == 'sampleFile') {
+                        if ($request->hasFile('sampleFile')) {
+                            $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
+                        }
+                    } else {
+                        $category[] = [
+                            'name' => $key,
+                            'contents' => $value,
+                        ];
+                    }
                 }
-            } else {
-                $category[] = [
-                    'name' => $key,
-                    'contents' => $value,
-                ];
-            }
-        }
 
-        $url = $this->urlAPI() . '/create-category-child';
-        $client = new Client([
-            'headers' => [
-                'token' => $token,
-                'Content-Type' => 'multipart/form-data',
-            ],
-        ]);
-        $req = $client->post(
-            $url,
-            [
-                'multipart' => $category,
-            ],
-        );
-        
-        $response = json_decode($req->getBody()->getContents(), true);
-        
-        if ($response['status'] == 1) {
-            alert()->success($response['message']);
-        } else {
-            alert()->error($response['message'], '');
-        }
-        return back();
-        } catch (\Throwable $th) {
-                alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+                $url = $this->urlAPI() . '/create-category-child';
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                        'Content-Type' => 'multipart/form-data',
+                    ],
+                ]);
+                $req = $client->post($url, [
+                    'multipart' => $category,
+                ]);
+
+                $response = json_decode($req->getBody()->getContents(), true);
+
+                if ($response['status'] == 1) {
+                    alert()->success($response['message']);
+                } else {
+                    alert()->error($response['message'], '');
+                }
                 return back();
+            } else {
+                return view('welcome');
             }
+        } catch (\Throwable $th) {
+            alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
     }
 
     public function listChild(Request $request, $id)
     {
         try {
-        $token = $request->cookie('token');
+            $token = $request->cookie('token');
+           if ($token != null && $token != '') {
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                    ],
+                ]);
 
-        $client = new Client([
-            'headers' => [
-                'token' => $token,
-            ],
-        ]);
+                $data = $client->get($this->urlAPI() . '/list-category-child?category_parent_id=' . $id);
+                $response = json_decode($data->getBody()->getContents(), true);
+                $child = $response['data'];
 
-        $data = $client->get($this->urlAPI() . '/list-category-child?category_parent_id=' . $id);
-        $response = json_decode($data->getBody()->getContents(), true);
-        $child = $response['data'];
-
-        if ($response['status'] == 0) {
-            alert()->warning($response['message']);
-            return back();
-        }
-        return view('includes.category.child', compact('id', 'child'));
+                if ($response['status'] == 0) {
+                    alert()->warning($response['message']);
+                    return back();
+                }
+                return view('includes.category.child', compact('id', 'child'));
+            } else {
+                return view('welcome');
+            }
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
@@ -241,29 +249,32 @@ class CategoryController extends ControllerBase
     {
         try {
             $token = $request->cookie('token');
+           if ($token != null && $token != '') {
+                $body = [
+                    'id' => $id,
+                ];
+                $input = json_encode($body);
 
-            $body = [
-                'id' => $id,
-            ];
-            $input = json_encode($body);
+                $url = $this->urlAPI() . '/delete-category-child';
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                        'Content-Type' => 'application/json',
+                    ],
+                ]);
+                $req = $client->post($url, ['body' => $input]);
 
-            $url = $this->urlAPI() . '/delete-category-child';
-            $client = new Client([
-                'headers' => [
-                    'token' => $token,
-                    'Content-Type' => 'application/json',
-                ],
-            ]);
-            $req = $client->post($url, ['body' => $input]);
-            
-            $response = json_decode($req->getBody()->getContents(), true);
+                $response = json_decode($req->getBody()->getContents(), true);
 
-            if ($response['status'] == 1) {
-                alert()->success($response['message']);
+                if ($response['status'] == 1) {
+                    alert()->success($response['message']);
+                } else {
+                    alert()->warning($response['message']);
+                }
+                return back();
             } else {
-                alert()->warning($response['message']);
+                return view('welcome');
             }
-            return back();
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
@@ -274,45 +285,43 @@ class CategoryController extends ControllerBase
     {
         try {
             $token = $request->cookie('token');
-
-            $category = [];
-            foreach ($request->except('_token') as $key => $value) {
-                if ($key == 'sampleFile') {
-                    if ($request->hasFile('sampleFile')) {
-                        $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
+           if ($token != null && $token != '') {
+                $category = [];
+                foreach ($request->except('_token') as $key => $value) {
+                    if ($key == 'sampleFile') {
+                        if ($request->hasFile('sampleFile')) {
+                            $category[] = Helpers::imageAttribute($request->sampleFile, 'sampleFile');
+                        }
+                    } else {
+                        $category[] = [
+                            'name' => $key,
+                            'contents' => $value,
+                        ];
                     }
-                } else {
-                    $category[] = [
-                        'name' => $key,
-                        'contents' => $value,
-                    ];
                 }
-            }
 
-            $url = $this->urlAPI() . '/update-category-child';
-            $client = new Client([
-                'headers' => [
-                    'token' => $token,
-                    'Content-Type' => 'multipart/form-data',
-                ],
-            ]);
-            $req = $client->post(
-                $url,
-                [
+                $url = $this->urlAPI() . '/update-category-child';
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                        'Content-Type' => 'multipart/form-data',
+                    ],
+                ]);
+                $req = $client->post($url, [
                     'multipart' => $category,
-                ],
-               
-            );
-           
+                ]);
 
-            $response = json_decode($req->getBody()->getContents(), true);
-           
-            if ($response['status'] == 1) {
-                alert()->success($response['message']);
+                $response = json_decode($req->getBody()->getContents(), true);
+
+                if ($response['status'] == 1) {
+                    alert()->success($response['message']);
+                } else {
+                    alert()->error($response['message'], '');
+                }
+                return back();
             } else {
-                alert()->error($response['message'], '');
+                return view('welcome');
             }
-            return back();
         } catch (\Throwable $th) {
             alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
@@ -322,23 +331,26 @@ class CategoryController extends ControllerBase
     public function listChildFromParrent(Request $request)
     {
         try {
-        $token = $request->cookie('token');
+            $token = $request->cookie('token');
+           if ($token != null && $token != '') {
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                    ],
+                ]);
+                $id = $request->id;
+                $data = $client->get($this->urlAPI() . '/list-category-child?category_parent_id=' . $id);
+                $response = json_decode($data->getBody()->getContents(), true);
+                $child = $response['data'];
 
-        $client = new Client([
-            'headers' => [
-                'token' => $token,
-            ],
-        ]);
-        $id = $request->id;
-        $data = $client->get($this->urlAPI() . '/list-category-child?category_parent_id=' . $id);
-        $response = json_decode($data->getBody()->getContents(), true);
-        $child = $response['data'];
-
-        if ($response['status'] == 0) {
-            alert()->warning($response['message']);
-            return 0;
-        }
-        return $child;
+                if ($response['status'] == 0) {
+                    alert()->warning($response['message']);
+                    return 0;
+                }
+                return $child;
+            } else {
+                return view('welcome');
+            }
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();

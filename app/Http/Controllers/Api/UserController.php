@@ -108,23 +108,27 @@ class UserController extends ControllerBase
     {
         try {
             $token = $request->cookie('token');
-            $client = new Client();
-            $data = $client->get($this->urlAPI() . '/logout', [
-                'headers' => [
-                    'token' => $token,
-                    'Accept' => 'application/json',
-                ],
-            ]);
-            $response = json_decode($data->getBody()->getContents(), true);
+            if ($token != null && $token != '') {
+                $client = new Client();
+                $data = $client->get($this->urlAPI() . '/logout', [
+                    'headers' => [
+                        'token' => $token,
+                        'Accept' => 'application/json',
+                    ],
+                ]);
+                $response = json_decode($data->getBody()->getContents(), true);
 
-            if ($response['status'] == 1) {
-                Cookie::queue(Cookie::forget('token'));
-                return redirect()->route('dang-nhap');
+                if ($response['status'] == 1) {
+                    Cookie::queue(Cookie::forget('token'));
+                    return redirect()->route('dang-nhap');
+                }
+
+                return redirect()
+                    ->route('trang-chu')
+                    ->getTargetUrl();
+            } else {
+                return view('welcome');
             }
-
-            return redirect()
-                ->route('trang-chu')
-                ->getTargetUrl();
         } catch (\Throwable $th) {
             alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
@@ -135,22 +139,25 @@ class UserController extends ControllerBase
     {
         try {
             $token = $request->cookie('token');
+            if ($token != null && $token != '') {
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                    ],
+                ]);
 
-            $client = new Client([
-                'headers' => [
-                    'token' => $token,
-                ],
-            ]);
+                $data = $client->get($this->urlAPI() . '/list-user?page=' . $page);
+                $response = json_decode($data->getBody()->getContents(), true);
+                if ($response['status'] == 0) {
+                    alert()->warning($response['message']);
+                    return back();
+                }
+                $users = $response['data'];
 
-            $data = $client->get($this->urlAPI() . '/list-user?page=' . $page);
-            $response = json_decode($data->getBody()->getContents(), true);
-            if ($response['status'] == 0) {
-                alert()->warning($response['message']);
-                return back();
+                return view('includes.user.index', compact('users'));
+            } else {
+                return view('welcome');
             }
-            $users = $response['data'];
-
-            return view('includes.user.index', compact('users'));
         } catch (\Throwable $th) {
             alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
             return back();
@@ -161,33 +168,36 @@ class UserController extends ControllerBase
     {
         try {
             $token = $request->cookie('token');
+            if ($token != null && $token != '') {
+                $topping = [
+                    'name' => $request->name,
+                    'bank_number' => $request->bank_number,
+                    'bank_name' => $request->bank_name,
+                    'agency' => $request->agency,
+                    'payment_id' => $request->id,
+                ];
 
-            $topping = [
-                'name' => $request->name,
-                'bank_number' => $request->bank_number,
-                'bank_name' => $request->bank_name,
-                'agency' => $request->agency,
-                'payment_id' => $request->id,
-            ];
+                $input = json_encode($topping);
+                $url = $this->urlAPI() . '/info-payment';
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                        'Content-Type' => 'application/json',
+                    ],
+                ]);
+                $req = $client->post($url, ['body' => $input]);
 
-            $input = json_encode($topping);
-            $url = $this->urlAPI() . '/info-payment';
-            $client = new Client([
-                'headers' => [
-                    'token' => $token,
-                    'Content-Type' => 'application/json',
-                ],
-            ]);
-            $req = $client->post($url, ['body' => $input]);
+                $response = json_decode($req->getBody()->getContents(), true);
 
-            $response = json_decode($req->getBody()->getContents(), true);
-
-            if ($response['status'] == 1) {
-                alert()->success($response['message']);
-                return redirect()->route('trang-chu');
+                if ($response['status'] == 1) {
+                    alert()->success($response['message']);
+                    return redirect()->route('trang-chu');
+                } else {
+                    alert()->error($response['message'], '');
+                    return back();
+                }
             } else {
-                alert()->error($response['message'], '');
-                return back();
+                return view('welcome');
             }
         } catch (\Throwable $th) {
             alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
