@@ -66,6 +66,7 @@ Route::prefix('user')->name('user.')->group(function () {
 
 Route::prefix('don-hang')->name('order.')->group(function () {
     Route::get('/danh-sach/{page}/trang-thai={status}', [OrderController::class, 'listOrder'])->name('listOrder');
+    Route::get('/chi-tiet/{code}', [OrderController::class, 'detail'])->name('detail');
     Route::post('/cap-nhat/{code}', [OrderController::class, 'updateOrder'])->name('updateOrder');
     Route::post('/cap-nhat-danh-muc-cha', [CategoryController::class, 'updateParrent'])->name('updateParrent');
     Route::post('/xoa-danh-muc-cha/{id}', [CategoryController::class, 'deleteParrent'])->name('delete');

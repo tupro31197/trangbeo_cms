@@ -65,6 +65,29 @@ class OrderController extends ControllerBase
         }
     }
 
+    public function detail(Request $request, $code)
+    {
+        try {
+            $token = $request->cookie('token');
+
+            $client = new Client([
+                'headers' => [
+                    'token' => $token,
+                    'Content-Type' => 'application/json',
+                ],
+            ]);
+
+            $data = $client->get($this->urlAPI() . '/detail-order?order_code=' . $code);
+            $response = json_decode($data->getBody()->getContents(), true);
+            $detail = $response['data'];
+            // dd($response);
+            return view('includes.order.detail', compact('detail'));
+        } catch (\Throwable $th) {
+            alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
+    }
+
     public function updateOrder(Request $request, $code)
     {
         // try {
