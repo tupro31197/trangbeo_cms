@@ -117,8 +117,8 @@ $currentPage = $orders['current_page'];
                                     <td>{{ $statusOrder }}</td>
                                    
                                     <td class="text-center">
-
-                                        <a href="" data-toggle="modal" data-target="#detail{{ $item['order_code'] }}"
+                                        {{-- data-toggle="modal" data-target="#detail{{ $item['order_code'] }}" --}}
+                                        <a href="{{ route('order.detail', ['code' => $item['order_code']])}}" 
                                             class="btn btn-info btn-circle btn-sm ">
                                             <i class="fas fa-info-circle"></i>
                                         </a>
