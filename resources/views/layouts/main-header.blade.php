@@ -139,8 +139,8 @@ if (isset($token) && $token != null) {
         crossorigin="anonymous"></script>
 
 <script>
-    const URI_SOCKET = "http://localhost:3002";
-    const LIST_ORDER_PAGE = "http://cms-app-mon.test/don-hang/danh-sach/1/trang-thai=0";
+    const URI_SOCKET = "http://103.226.249.66:8016";
+    const LIST_ORDER_PAGE = "http://shipdoantrangbeo.com/don-hang/danh-sach/1/trang-thai=0";
 
     const socket = io(URI_SOCKET, {
         secure: true,
