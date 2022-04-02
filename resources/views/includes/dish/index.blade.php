@@ -128,12 +128,47 @@ $currentPage = $dishes['current_page'];
                                                 </a>
                                                 <!-- overDish Modal-->
                                                 <div class="modal fade" id="overDish{{ $dish['id'] }}" tabindex="-1"
-                                                    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel">Bạn có chắn chắn
                                                                     muốn xác nhận hết món?</h5>
+                                                                <button class="close" type="button" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Tên món ăn: {{ $dish['name'] }}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-secondary" type="button"
+                                                                        data-dismiss="modal">Huỷ</button>
+                                                                <form
+                                                                    action="{{ route('dish.overDish', ['id' => $dish['id']]) }}"
+                                                                    method="post">
+                                                                    @csrf
+
+                                                                    <button class="btn btn-danger" href="">Xác nhận</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @elseif($dish['status'] == 2)
+                                                <a class="btn btn-default btn-circle btn-sm" style="background: #f05e19" href="" data-toggle="modal"
+                                                   data-target="#activeDish{{ $dish['id'] }}">
+                                                    Mở lại món
+                                                </a>
+                                                <!-- activeDish Modal-->
+                                                <div class="modal fade" id="activeDish{{ $dish['id'] }}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Bạn có chắn chắn
+                                                                    muốn mở lại món?</h5>
                                                                 <button class="close" type="button" data-dismiss="modal"
                                                                     aria-label="Close">
                                                                     <span aria-hidden="true">×</span>
