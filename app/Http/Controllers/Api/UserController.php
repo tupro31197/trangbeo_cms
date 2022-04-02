@@ -84,7 +84,6 @@ class UserController extends ControllerBase
             $req = $client->post($url, ['body' => $input]);
 
             $response = json_decode($req->getBody()->getContents(), true);
-            // dd($response);
 
             if ($response['status'] == 0) {
                 alert()->warning($response['message']);

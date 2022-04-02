@@ -81,6 +81,7 @@ $currentPage = $dishes['current_page'];
                                         <th>Tên món ăn</th>
                                         <th>Giá</th>
                                         <th>Số lượng</th>
+                                        <th>Trạng thái</th>
                                         <th>Thao tác</th>
                                     </tr>
                                 </thead>
@@ -98,6 +99,12 @@ $currentPage = $dishes['current_page'];
                                                 <p>Số lượng: {{ $dish['count'] }}</p> <br>
                                                 <p>Đã bán: {{ $dish['total_count_sold'] }}</p>
                                             </td>
+                                            <td>
+                                                @if($dish['status'] == 1) Đang hoạt động
+                                                @elseif ($dish['status'] == -1) Đã bị xóa
+                                                @else Hết món
+                                                @endif
+                                            </td>
                                             <td style="vertical-align: middle ">
                                                 <a class="btn btn-info btn-circle btn-sm" href="{{route('dish.detailDish', ['id' => $dish['id'] ])}}">
                                                     <i class="fas fa-info-circle"></i>
@@ -111,10 +118,47 @@ $currentPage = $dishes['current_page'];
                                                     data-target="#delete{{ $dish['id'] }}">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
-                                                    <a class="btn btn-warning btn-circle btn-sm" href="{{route('rate.listRate', ['dish_id' => $dish['id'], 'dish' => $dish['name']])}}">
+                                                <a class="btn btn-warning btn-circle btn-sm" href="{{route('rate.listRate', ['dish_id' => $dish['id'], 'dish' => $dish['name']])}}">
                                                     <i class="fas fa-star"></i>
                                                 </a>
+                                                @if($dish['status'] == 1)
+                                                <a class="btn btn-default btn-circle btn-sm" style="background: #f05e19" href="" data-toggle="modal"
+                                                    data-target="#overDish{{ $dish['id'] }}">
+                                                    Hết món
+                                                </a>
+                                                <!-- overDish Modal-->
+                                                <div class="modal fade" id="overDish{{ $dish['id'] }}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Bạn có chắn chắn
+                                                                    muốn xác nhận hết món?</h5>
+                                                                <button class="close" type="button" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Tên món ăn: {{ $dish['name'] }}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-secondary" type="button"
+                                                                    data-dismiss="modal">Huỷ</button>
+                                                                <form
+                                                                    action="{{ route('dish.overDish', ['id' => $dish['id']]) }}"
+                                                                    method="post">
+                                                                    @csrf
+
+                                                                    <button class="btn btn-danger" href="">Xác nhận</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @endif
                                             </td>
+
                                             <!-- delete Modal-->
                                             <div class="modal fade" id="delete{{ $dish['id'] }}" tabindex="-1"
                                                 role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -140,7 +184,7 @@ $currentPage = $dishes['current_page'];
                                                                 method="post">
                                                                 @csrf
 
-                                                                <button class="btn btn-danger" href="">Xoá</button>
+                                                                <button class="btn btn-danger" href="">Xóa</button>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -213,20 +257,20 @@ $currentPage = $dishes['current_page'];
                                                 </div>
                                                 <!-- /.modal-dialog -->
                                             </div>
-                                            
-                                          
+
+
                                         </tr>
-                                        
+
 
                                     @endforeach
                                     <td colspan="6" class="text-center" boder:none>
                                         {{-- ======= phân trang ======== --}}
-                                       
+
                                         <ul class="pagination justify-content-end">
                                             <li class="page-item"><a class="page-link"
                                                     href="{{ asset('mon-an/danh-sach/1') }}">Đầu</a>
                                             </li>
-    
+
                                             @if ($currentPage - 1 >= 1)
                                                 <li class="page-item"><a class="page-link"
                                                         href="{{ asset('mon-an/danh-sach/' . ($currentPage - 1) ) }}">
@@ -258,7 +302,7 @@ $currentPage = $dishes['current_page'];
                                         {{-- ==========hết phân trang ============ --}}
                                     </td>
                                 </tbody>
-                                
+
                             </table>
 
                         </div>
@@ -389,7 +433,7 @@ $currentPage = $dishes['current_page'];
 
         });
 
-       
+
         var id = document.getElementById("categoryParrent").value;
         var id_child = document.getElementById("id_child").value;
 
@@ -418,7 +462,7 @@ $currentPage = $dishes['current_page'];
 
         $('#categoryParrent').change(function() {
             var id = document.getElementById("categoryParrent").value;
-           
+
             console.log(id_child);
             $.ajax({
                 url: "{{ asset('danh-muc/tim-kiem') }}",

@@ -48,7 +48,7 @@ Route::prefix('mon-an')->name('dish.')->group(function () {
     Route::post('/them-moi-mon-an', [DishController::class, 'addDish'])->name('addDish');
     Route::post('/cap-nhat-mon-an', [DishController::class, 'updateDish'])->name('updateDish');
     Route::post('/xoa-mon-an/{id}', [DishController::class, 'deleteParrent'])->name('delete');
-
+    Route::post('/het-mon-an/{id}', [DishController::class, 'overDish'])->name('overDish');
     Route::post('/them-moi-topping', [DishController::class, 'addDishTopping'])->name('addDishTopping');
     Route::post('/xoa-topping/{id}', [DishController::class, 'deleteTopping'])->name('deleteTopping');
     Route::post('/cap-nhat-topping', [DishController::class, 'updateDishTopping'])->name('updateDishTopping');
