@@ -153,6 +153,9 @@ if (isset($token) && $token != null) {
     socket.on('NEW_ORDER', (data) => {
         console.log("NEW_ORDER: ");
         $('#bell-notification').css('color', 'red');
+        setTimeout(function () {
+            alert("Bạn có đơn hàng mới")
+        }, 1000);
     })
 
     document.getElementById('bell-notification').onclick = function changeColor() {
