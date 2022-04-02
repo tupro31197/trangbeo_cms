@@ -142,6 +142,9 @@ if (isset($token) && $token != null) {
     const URI_SOCKET = "http://103.226.249.66:8016";
     const LIST_ORDER_PAGE = "http://shipdoantrangbeo.com/don-hang/danh-sach/1/trang-thai=0";
 
+    console.log("URI_SOCKET: ", URI_SOCKET);
+    console.log("LIST_ORDER_PAGE: ", LIST_ORDER_PAGE);
+
     const socket = io(URI_SOCKET, {
         secure: true,
         transports: ['websocket', 'polling']
