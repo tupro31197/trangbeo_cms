@@ -62,11 +62,11 @@ class SettingController extends ControllerBase
                 $shipCosts = [];
 
                 foreach($request->input('from') as $key => $value){
-                    $shipCosts[$key]['from'] = $request->input('from')[$key];
-                    $shipCosts[$key]['to'] = $request->input('to')[$key];
-                    $shipCosts[$key]['price'] = $request->input('price')[$key];
+                    $shipCosts[$key]['from'] = (int)$request->input('from')[$key];
+                    $shipCosts[$key]['to'] = (int)$request->input('to')[$key];
+                    $shipCosts[$key]['price'] = (int)$request->input('price')[$key];
                 }
-                $data['register_money'] = $request->input('register_money');
+                $data['register_money'] = (int)$request->input('register_money');
                 $data['distance_price'] = $shipCosts;
                 $config = new stdClass;
                 $config->id = $id;
