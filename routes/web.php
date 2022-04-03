@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\DishController;
 use App\Http\Controllers\Api\RateController;
+use App\Http\Controllers\Api\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -77,3 +78,8 @@ Route::prefix('don-hang')->name('order.')->group(function () {
 Route::prefix('danh-gia')->name('rate.')->group(function () {
     Route::get('/', [RateController::class, 'listRate'])->name('listRate');
 });
+Route::prefix('settings')->name('settings.')->group(function () {
+    Route::get('/', [SettingController::class, 'index'])->name('index');
+    Route::put('{id}/update', [SettingController::class, 'update'])->name('update');
+});
+
