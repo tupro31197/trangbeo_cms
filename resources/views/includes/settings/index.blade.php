@@ -14,7 +14,7 @@
                             <form action="{{ route('settings.update', $setting['id']) }}" method="post">
                                 @csrf
                                 @method('put')
-                                <div class="card card-success">
+                                <div class="card card-info">
                                     <div class="card-header">
                                         <h3 class="card-title">Quà tặng mở tài khoản</h3>
                                     </div>
@@ -33,16 +33,7 @@
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
-                                <div class="form-group ">
-                                    <div class="flex ml-2">
-                                        <label>Quà tặng mở tài khoản</label>
-                                        <div class="input-group">
-                                            <input type="text" autocomplete="off" name="register_money" required
-                                                value="{{ $setting['register_money'] }}" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card card-warning">
+                                <div class="card card-success">
                                     <div class="card-header">
                                         <h3 class="card-title">Địa chỉ cửa hàng</h3>
                                     </div>
@@ -128,7 +119,7 @@
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
-                                <div class="card card-info">
+                                <div class="card card-warning">
                                     <div class="card-header">
                                         <h3 class="card-title">Chi phí vận chuyển</h3>
                                     </div>
