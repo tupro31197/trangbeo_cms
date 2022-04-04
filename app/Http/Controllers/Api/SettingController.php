@@ -51,7 +51,7 @@ class SettingController extends ControllerBase
      */
     public function update(Request $request, $id)
     {
-        // try {
+        try {
             $token = $request->cookie('token');
             if ($token != null && $token != '') {
                 $client = new Client([
@@ -68,10 +68,10 @@ class SettingController extends ControllerBase
                 }
                 $data['register_money'] = (int)$request->input('register_money');
                 $data['distance_price'] = $shipCosts;
-                $config = new stdClass;
-                $config->id = $id;
-                $config->distance_price = $shipCosts;
-                $config->register_money = $request->input('register_money');
+                $data['store_address'] = $request->input('store_address');
+                $data['bank_setting'] = $request->input('bank_setting');
+                $data['store_address']['long'] = (float)$data['store_address']['long'];
+                $data['store_address']['lat'] = (float)$data['store_address']['lat'];
                 $url = $this->urlAPI() . '/config';
                 $client = new Client([
                     'headers' => [
@@ -96,10 +96,10 @@ class SettingController extends ControllerBase
             } else {
                 return view('welcome');
             }
-        // } catch (\Throwable $th) {
-        //     alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
-        //     return back();
-        // }
+        } catch (\Throwable $th) {
+            alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
     }
 
 }
