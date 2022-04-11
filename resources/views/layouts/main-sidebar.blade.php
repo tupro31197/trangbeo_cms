@@ -48,6 +48,14 @@ if (isset($token) && $token != null) {
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 <li class="nav-item">
+                    <a href=" {{ route('banners.index') }}" class="nav-link  @if (URL::current() == route('banners.index')) active  @endif">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Banner
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href=" {{ asset('danh-muc/danh-muc-cha') }}" class="nav-link  @if (URL::current() == asset('danh-muc/danh-muc-cha')) active  @endif">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
