@@ -69,16 +69,16 @@ $currentPage = $orders['current_page'];
                                 <th>Ngày đặt</th>
                                 <th>Thanh toán</th>
                                 <th>Trạng thái</th>
-                               
+
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                             @foreach ($orders['data'] as $key => $item)
-                          
+
                                 @php
-                
+
                                     $date = date(' d-m-Y', strtotime($item['createdAt']));
                                     $statusOrder = '';
                                     if ($item['status'] == 0) {
@@ -101,9 +101,12 @@ $currentPage = $orders['current_page'];
                                 <tr>
                                     <td>{{ ++$key }}</td>
                                     <td>{{ $item['order_code'] }}</td>
-                                    <td>{{ $item['user']['name'] }}
+                                    <td>
+                                        @if($item['user']!= null)
+                                        {{ $item['user']['name'] }}
                                         <br>
                                         {{ $item['user']['phone'] }}
+                                        @endif
                                     </td>
                                     <td>{{ number_format($item['total_money']) }} đ</td>
                                     <td>{{ number_format($item['fee_ship']) }} đ</td>
@@ -115,10 +118,10 @@ $currentPage = $orders['current_page'];
                                     <td>{{ $date }} </td>
                                     <td>{{ $payment}}</td>
                                     <td>{{ $statusOrder }}</td>
-                                   
+
                                     <td class="text-center">
                                         {{-- data-toggle="modal" data-target="#detail{{ $item['order_code'] }}" --}}
-                                        <a href="{{ route('order.detail', ['code' => $item['order_code']])}}" 
+                                        <a href="{{ route('order.detail', ['code' => $item['order_code']])}}"
                                             class="btn btn-info btn-circle btn-sm ">
                                             <i class="fas fa-info-circle"></i>
                                         </a>
@@ -126,7 +129,7 @@ $currentPage = $orders['current_page'];
                                             class="btn btn-info btn-circle btn-sm mt-1">
                                             <i class="fas fa-print"></i>
                                         </a>
-                                       
+
                                     </td>
 
                                     <!-- detail Modal-->
@@ -145,7 +148,7 @@ $currentPage = $orders['current_page'];
                                                 <form method="post" action="{{ asset('don-hang/cap-nhat/'.$item['order_code'])}}">
                                                 @csrf
                                                     <div class="modal-body">
-                                                   
+
                                                     <div class="row p-2">
                                                         <b class="col-3">Số lượng sản phẩm:</b>
                                                         <span class="col-3">{{ $item['total_count'] }}</span>
@@ -155,9 +158,11 @@ $currentPage = $orders['current_page'];
                                                     </div>
                                                     <div class="row p-2">
                                                         <b class="col-3">Họ tên khách hàng:</b>
+                                                        @if($item['user']!= null)
                                                         <span class="col-3">{{ $item['user']['name'] }}</span>
                                                         <b class="col-3">Số điện thoại:</b>
                                                         <span class="col-3">{{ $item['user']['phone'] }}</span>
+                                                        @endif
                                                     </div>
                                                     <div class="row p-2">
                                                         <b class="col-3">Địa chỉ:</b>
@@ -175,7 +180,7 @@ $currentPage = $orders['current_page'];
                                                             @if($item['status'] == 1)
                                                             <option value="1" @if ($item['status'] == 1){{"selected"}}@endif>Đã đặt đơn</option>
                                                            @endif
-                    
+
                                                             @if(in_array($item['status'], [1,9]))
                                                             <option value="9" @if ($item['status'] == 9){{"selected"}}@endif>Đã xác nhận</option>
                                                             @endif
@@ -188,7 +193,7 @@ $currentPage = $orders['current_page'];
                                                             @if(in_array($item['status'], [1,8,9,4]))
                                                             <option value="8" @if ($item['status'] == 8){{"selected"}}@endif>Đã huỷ đơn</option>
                                                             @endif
-                                                         
+
 
                                                         </select>
                                                         @endif
@@ -199,9 +204,9 @@ $currentPage = $orders['current_page'];
                                                         <b class="col-3">Sử dụng voucher:</b>
                                                         <span class="col-3">@if ($item['is_use_voucher'] == 0) {{"Không"}}
                                                             @else {{"Có"}}
-                                                            
+
                                                         @endif</span>
-                                                        
+
                                                     </div>
                                                     <div class="row p-2">
                                                         <b class="col-3">Ngày đặt hàng:</b>
@@ -209,17 +214,17 @@ $currentPage = $orders['current_page'];
                                                         <b class="col-3">Thanh toán:</b>
                                                         <span class="col-3">@if ($item['type_payment'] == 0) {{"Tiền mặt"}}
                                                             @else {{"Ngân hàng"}}
-                                                            
+
                                                         @endif</span>
-                                                        
+
                                                     </div>
                                                     <div class="row p-2">
                                                         <b class="col-3">Dụng cụ ăn uống:</b>
                                                         <span class="col-3">@if ($item['kitchen_tool'] == 0) {{"Không"}}
                                                             @else {{"Có"}}
-                                                            
+
                                                         @endif</span>
-                                                       
+
                                                     </div>
                                                     @if (isset($item['image_payment']) && $item['image_payment'] != null)
                                                     <div class="row p-2">
@@ -234,12 +239,12 @@ $currentPage = $orders['current_page'];
                                                     @endif
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <a class="btn btn-secondary" 
+                                                    <a class="btn btn-secondary"
                                                         data-dismiss="modal">Đóng</a>
                                                         <button type="submit" class="btn btn-primary">Lưu</a>
                                                 </div>
                                                 </div>
-                                                
+
                                             </form>
                                             </div>
                                         </div>
@@ -252,7 +257,7 @@ $currentPage = $orders['current_page'];
                    <tr>
                                 <td colspan="9" class="text-center" boder:none>
                                     {{-- ======= phân trang ======== --}}
-                                   
+
                                     <ul class="pagination justify-content-end">
                                         <li class="page-item"><a class="page-link"
                                                 href="{{ asset('don-hang/danh-sach/1/trang-thai='. $status) }}">Đầu</a>
