@@ -82,7 +82,7 @@ class DishController extends ControllerBase
                 $data = $client->get($this->urlAPI() . '/detail-dish?dish_id=' . $id);
                 $response = json_decode($data->getBody()->getContents(), true);
                 $detail = $response['data']['data'];
-
+                // dd($detail);
                 return view('includes.dish.detail', compact('detail'));
             } else {
                 return view('welcome');
@@ -297,6 +297,45 @@ class DishController extends ControllerBase
         }
     }
 
+    public function addTypeToping(Request $request)
+    {
+        try {
+            $token = $request->cookie('token');
+            if ($token != null && $token != '') {
+                $topping = [
+                    'category_topping_id' => $request->category_topping_id,
+                    'name' => $request->name,
+                    'money' => $request->money,
+                    'limit' => $request->limit,
+                ];
+                $input = json_encode($request->all());
+
+                $url = $this->urlAPI() . '/create-topping-category';
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                        'Content-Type' => 'application/json',
+                    ],
+                ]);
+                $req = $client->post($url, ['body' => $input]);
+
+                $response = json_decode($req->getBody()->getContents(), true);
+
+                if ($response['status'] == 1) {
+                    alert()->success($response['message']);
+                    return redirect()->route('dish.detailDish', ['id' => $request->dish_id]);
+                } else {
+                    alert()->error($response['message'], '');
+                    return back();
+                }
+            } else {
+                return view('welcome');
+            }
+        } catch (\Throwable $th) {
+            alert($th)->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
+    }
     public function deleteTopping(Request $request, $id)
     {
         try {

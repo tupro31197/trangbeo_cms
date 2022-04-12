@@ -16,7 +16,7 @@ if (isset($token) && $token != null) {
     //     $detail = $response['data'];
     //     $infor = $detail['user'];
     // }
-    
+
 
 }
 ?>
@@ -48,7 +48,15 @@ if (isset($token) && $token != null) {
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href=" {{ asset('danh-muc/danh-muc-cha') }}" class="nav-link">
+                    <a href=" {{ route('banners.index') }}" class="nav-link  @if (URL::current() == route('banners.index')) active  @endif">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Banner
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href=" {{ asset('danh-muc/danh-muc-cha') }}" class="nav-link  @if (URL::current() == asset('danh-muc/danh-muc-cha')) active  @endif">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Danh mục
@@ -56,7 +64,7 @@ if (isset($token) && $token != null) {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{asset('mon-an/danh-sach/1')}}" class="nav-link">
+                    <a href="{{asset('mon-an/danh-sach/1')}}" class="nav-link  @if (URL::current() == asset('mon-an/danh-sach/1')) active  @endif">
                         <i class="nav-icon fas fa-book fa-fw"></i>
                         <p>
                             Món ăn
@@ -64,7 +72,7 @@ if (isset($token) && $token != null) {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{asset('voucher/danh-sach/1')}}" class="nav-link">
+                    <a href="{{asset('voucher/danh-sach/1')}}" class="nav-link  @if (URL::current() == asset('voucher/danh-sach/1')) active  @endif">
                         <i class=" nav-icon fas fa-folder-open"></i>
                         <p>
                             Voucher
@@ -72,14 +80,14 @@ if (isset($token) && $token != null) {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ asset('user/danh-sach/1')}}" class="nav-link">
+                    <a href="{{ asset('user/danh-sach/1')}}" class="nav-link  @if (URL::current() == asset('user/danh-sach/1')) active  @endif">
                         <i class=" nav-icon fas fa-code"></i>
                         <p>
                             Người dùng
-                           
+
                         </p>
                     </a>
-                  
+
                 </li>
                 <li class="nav-item">
                     <a href="" class="nav-link">
@@ -126,11 +134,19 @@ if (isset($token) && $token != null) {
                                 <p>Đã huỷ</p>
                             </a>
                         </li>
-                       
-                    </ul>
-                   
-                </li>
 
+                    </ul>
+
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('settings.index')}}" class="nav-link  @if (URL::current() == route('settings.index')) active  @endif">
+                        <i class=" nav-icon fa fa-cogs"></i>
+                        <p>
+                            Cài đặt
+                        </p>
+                    </a>
+
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\Product\ProductController;
 use App\Http\Controllers\Api\VoucherController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\DishController;
 use App\Http\Controllers\Api\RateController;
+use App\Http\Controllers\Api\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +52,7 @@ Route::prefix('mon-an')->name('dish.')->group(function () {
     Route::post('/xoa-mon-an/{id}', [DishController::class, 'deleteParrent'])->name('delete');
     Route::post('/het-mon-an/{id}', [DishController::class, 'overDish'])->name('overDish');
     Route::post('/them-moi-topping', [DishController::class, 'addDishTopping'])->name('addDishTopping');
+    Route::post('add-type-toping', [DishController::class, 'addTypeToping'])->name('addTypeToping');
     Route::post('/xoa-topping/{id}', [DishController::class, 'deleteTopping'])->name('deleteTopping');
     Route::post('/cap-nhat-topping', [DishController::class, 'updateDishTopping'])->name('updateDishTopping');
 });
@@ -77,3 +80,13 @@ Route::prefix('don-hang')->name('order.')->group(function () {
 Route::prefix('danh-gia')->name('rate.')->group(function () {
     Route::get('/', [RateController::class, 'listRate'])->name('listRate');
 });
+Route::prefix('settings')->name('settings.')->group(function () {
+    Route::get('/', [SettingController::class, 'index'])->name('index');
+    Route::put('{id}/update', [SettingController::class, 'update'])->name('update');
+});
+Route::prefix('banners')->name('banners.')->group(function () {
+    Route::get('/', [BannerController::class, 'index'])->name('index');
+    Route::post('/', [BannerController::class, 'store'])->name('store');
+    Route::get('{id}/delete', [BannerController::class, 'delete'])->name('delete');
+});
+
