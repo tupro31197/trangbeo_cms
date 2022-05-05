@@ -92,6 +92,78 @@
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
                                                             <!-- delete Modal-->
+                                                            @if($item2['status'] == 1)
+                                                            <a class="btn btn-default btn-circle btn-sm" style="background: #f05e19" href="" data-toggle="modal"
+                                                               data-target="#overTopping{{ $item2['id'] }}">
+                                                                Hết topping
+                                                            </a>
+                                                            <!-- overDish Modal-->
+                                                            <div class="modal fade" id="overTopping{{ $item2['id'] }}" tabindex="-1"
+                                                                 role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Bạn có chắn chắn
+                                                                                muốn xác nhận hết topping?</h5>
+                                                                            <button class="close" type="button" data-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                <span aria-hidden="true">×</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            Tên món ăn: {{ $item2['name'] }}
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-secondary" type="button"
+                                                                                    data-dismiss="modal">Huỷ</button>
+                                                                            <form
+                                                                                action="{{ route('dish.overTopping', ['id' => $item2['id']]) }}"
+                                                                                method="post">
+                                                                                @csrf
+
+                                                                                <button class="btn btn-danger" href="">Xác nhận</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            @elseif($item2['status'] == 2)
+                                                            <a class="btn btn-default btn-circle btn-sm" style="background: #f05e19" href="" data-toggle="modal"
+                                                               data-target="#activeDish{{ $item2['id'] }}">
+                                                                Mở lại topping
+                                                            </a>
+                                                            <!-- activeDish Modal-->
+                                                            <div class="modal fade" id="activeDish{{ $item2['id'] }}" tabindex="-1"
+                                                                 role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Bạn có chắn chắn
+                                                                                muốn mở lại món?</h5>
+                                                                            <button class="close" type="button" data-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                <span aria-hidden="true">×</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            Tên món ăn: {{ $item2['name'] }}
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-secondary" type="button"
+                                                                                    data-dismiss="modal">Huỷ</button>
+                                                                            <form
+                                                                                action="{{ route('dish.overTopping', ['id' => $item2['id']]) }}"
+                                                                                method="post">
+                                                                                @csrf
+
+                                                                                <button class="btn btn-danger" href="">Xác nhận</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            @endif
+
 
                                         </tr>
                                     @else
@@ -108,6 +180,77 @@
                                                     class="btn btn-warning btn-circle btn-sm editcategory">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
+                                                @if($item2['status'] == 1)
+                                                <a class="btn btn-default btn-circle btn-sm" style="background: #f05e19" href="" data-toggle="modal"
+                                                   data-target="#overTopping{{ $item2['id'] }}">
+                                                    Hết topping
+                                                </a>
+                                                <!-- overDish Modal-->
+                                                <div class="modal fade" id="overTopping{{ $item2['id'] }}" tabindex="-1"
+                                                     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Bạn có chắn chắn
+                                                                    muốn xác nhận hết topping?</h5>
+                                                                <button class="close" type="button" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Tên món ăn: {{ $item2['name'] }}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-secondary" type="button"
+                                                                        data-dismiss="modal">Huỷ</button>
+                                                                <form
+                                                                    action="{{ route('dish.overTopping', ['id' => $item2['id']]) }}"
+                                                                    method="post">
+                                                                    @csrf
+
+                                                                    <button class="btn btn-danger" href="">Xác nhận</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @elseif($item2['status'] == 2)
+                                                <a class="btn btn-default btn-circle btn-sm" style="background: #f05e19" href="" data-toggle="modal"
+                                                   data-target="#activeDish{{ $item2['id'] }}">
+                                                    Mở lại topping
+                                                </a>
+                                                <!-- activeDish Modal-->
+                                                <div class="modal fade" id="activeDish{{ $item2['id'] }}" tabindex="-1"
+                                                     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Bạn có chắn chắn
+                                                                    muốn mở lại món?</h5>
+                                                                <button class="close" type="button" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Tên món ăn: {{ $item2['name'] }}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-secondary" type="button"
+                                                                        data-dismiss="modal">Huỷ</button>
+                                                                <form
+                                                                    action="{{ route('dish.overTopping', ['id' => $item2['id']]) }}"
+                                                                    method="post">
+                                                                    @csrf
+
+                                                                    <button class="btn btn-danger" href="">Xác nhận</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @endif
                                             </td>
 
                                         </tr>

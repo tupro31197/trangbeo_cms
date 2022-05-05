@@ -223,6 +223,37 @@ class DishController extends ControllerBase
         }
     }
 
+    public function overTopping(Request $request, $id)
+    {
+        try {
+            echo "123123123";
+            $token = $request->cookie('token');
+            if ($token != null && $token != '') {
+                $url = $this->urlAPI() . '/over-topping?topping_id='.$id;
+                $client = new Client([
+                    'headers' => [
+                        'token' => $token,
+                        'Content-Type' => 'application/json',
+                    ],
+                ]);
+                $req = $client->get($url);
+
+                $response = json_decode($req->getBody()->getContents(), true);
+                if ($response['status'] == 1) {
+                    alert()->success($response['message']);
+                } else {
+                    alert()->warning($response['message']);
+                }
+                return back();
+            } else {
+                return view('welcome');
+            }
+        } catch (\Throwable $th) {
+            alert()->error('Hệ thống đang được bảo trì. Vui lòng thử lại sau!');
+            return back();
+        }
+    }
+
     public function overDish(Request $request, $id)
     {
         try {
