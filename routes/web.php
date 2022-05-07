@@ -55,6 +55,7 @@ Route::prefix('mon-an')->name('dish.')->group(function () {
     Route::post('add-type-toping', [DishController::class, 'addTypeToping'])->name('addTypeToping');
     Route::post('/xoa-topping/{id}', [DishController::class, 'deleteTopping'])->name('deleteTopping');
     Route::post('/cap-nhat-topping', [DishController::class, 'updateDishTopping'])->name('updateDishTopping');
+    Route::post('/het-topping/{id}', [DishController::class, 'overTopping'])->name('overTopping');
 });
 
 Route::prefix('voucher')->name('voucher.')->group(function () {
