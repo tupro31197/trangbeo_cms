@@ -146,7 +146,6 @@ class OrderController extends ControllerBase
 
     public function print(Request $request, $code)
     {
-dd(1);
         $token = $request->cookie('token');
         if ($token != null && $token != '') {
             $client = new Client([
