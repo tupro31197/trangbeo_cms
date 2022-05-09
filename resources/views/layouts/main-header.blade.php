@@ -139,8 +139,8 @@ if (isset($token) && $token != null) {
         crossorigin="anonymous"></script>
 
 <script>
-    const URI_SOCKET = "http://103.226.249.66:8016";
-    const LIST_ORDER_PAGE = "http://shipdoantrangbeo.com/don-hang/danh-sach/1/trang-thai=0";
+    const URI_SOCKET = "http://103.226.249.210:8016";
+    const LIST_ORDER_PAGE = "http://103.226.249.210:8038/don-hang/danh-sach/1/trang-thai=0";
 
     console.log("URI_SOCKET: ", URI_SOCKET);
     console.log("LIST_ORDER_PAGE: ", LIST_ORDER_PAGE);
