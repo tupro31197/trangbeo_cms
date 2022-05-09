@@ -8,13 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    
+
     <title>Admin - Login</title>
     @include('layout/libcss')
 </head>
 
 <body class="bg-gradient-primary">
-  
+
     <div class="container">
 
         <!-- Outer Row -->
@@ -26,7 +26,7 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image" style="background: none"> <img src="{{ asset('img/logo.png') }}" alt="" style="display: block;
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image" style="background: none"> <img src="{{ asset('img/logo.jpg') }}" alt="" style="display: block;
                                 margin: 100px auto;
                                 width: 200px;"></div>
                             <div class="col-lg-6">
@@ -67,7 +67,7 @@
                                     <hr>
                                     <div class="text-center">
                                         <a class="small" href="dang-ki">Bạn chưa có tài khoản? Đăng kí!</a>
-                                        
+
                                     </div>
                                 </div>
                             </div>
